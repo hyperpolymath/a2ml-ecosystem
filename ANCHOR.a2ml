@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: MPL-2.0
+name = "a2ml-ecosystem"
+version = "0.1.0"
+authority = "coordination-hub"
+updated = "2026-06-21"
+
+[semantic-authority]
+policy = "satellite"
+upstream = "hyperpolymath/standards"
+local-ownership = [
+  "conformance fixtures",
+  "membership manifest",
+  "cross-repo drift CI",
+]
+
+[upstream.spec]
+repo = "hyperpolymath/standards"
+path = "docs/A2ML-SPEC.adoc"
+pin = "TODO-tag"
+
+[upstream.governance]
+repo = "hyperpolymath/standards"
+path = "GOVERNANCE.adoc"
+pin = "TODO-tag"
+
+[attestation]
+proof = "satellite anchor records upstream authority and local coordination scope"

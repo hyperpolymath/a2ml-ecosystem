@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: MPL-2.0
+project = "sectioned-manifest"
+schema_version = "1.0.0"
+
+[metadata]
+role = "valid conformance fixture"
+
+[attestation]
+proof = "fixture-proof"
+
+[section]
+heading = "well formed"

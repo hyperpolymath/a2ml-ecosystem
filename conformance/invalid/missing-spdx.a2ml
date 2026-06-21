@@ -1,0 +1,5 @@
+name = "missing-license-header"
+version = "1.0.0"
+
+[section]
+purpose = "The required license marker is absent from the first ten lines."

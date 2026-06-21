@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MPL-2.0
+name = "empty-attestation"
+version = "1.0.0"
+
+[attestation]
+note = "No proof, signature, or hash key is present."
+
+[section]
+purpose = "Attestation block should warn, and strict mode should fail."

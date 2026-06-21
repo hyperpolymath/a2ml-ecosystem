@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: MPL-2.0
+name = "missing-version"
+
+[section]
+purpose = "Identity exists but no version field is present."

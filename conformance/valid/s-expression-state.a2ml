@@ -1,0 +1,7 @@
+; SPDX-License-Identifier: MPL-2.0
+(state
+  (metadata
+    (name "s-expression-state")
+    (version "1.0.0"))
+  (current-position
+    (status "valid fixture")))

@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MPL-2.0
+agent-id = "fixture-agent"
+version = "1.0.0"
+
+[attestation]
+signature = "fixture-signature"
+
+[section]
+purpose = "Valid attestation block with a signature field."
