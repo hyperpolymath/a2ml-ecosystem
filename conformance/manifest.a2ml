@@ -1,0 +1,19 @@
+; SPDX-License-Identifier: MPL-2.0
+(conformance-manifest
+  (metadata
+    (name "a2ml-conformance-corpus")
+    (version "0.1.0")
+    (updated "2026-06-21"))
+
+  (positive-fixtures
+    (fixture "valid/basic-project.a2ml" (expect "pass"))
+    (fixture "valid/attested-agent.a2ml" (expect "pass"))
+    (fixture "valid/s-expression-state.a2ml" (expect "pass"))
+    (fixture "valid/sectioned-manifest.a2ml" (expect "pass")))
+
+  (negative-fixtures
+    (fixture "invalid/missing-identity.a2ml" (expect "error") (reason "missing identity"))
+    (fixture "invalid/missing-version.a2ml" (expect "strict-error") (reason "missing version warning"))
+    (fixture "invalid/missing-spdx.a2ml" (expect "strict-error") (reason "missing license header warning"))
+    (fixture "invalid/empty-attestation.a2ml" (expect "strict-error") (reason "empty attestation warning"))
+    (fixture "invalid/malformed-heading.a2ml" (expect "strict-error") (reason "malformed heading warning"))))

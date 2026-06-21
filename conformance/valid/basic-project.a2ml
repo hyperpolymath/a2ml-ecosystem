@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: MPL-2.0
+name = "basic-project"
+version = "1.0.0"
+
+[section]
+purpose = "Minimal valid A2ML fixture with identity, version, and license header."

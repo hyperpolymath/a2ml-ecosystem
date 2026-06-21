@@ -1,0 +1,48 @@
+[submodule "members/implementations/a2ml-rs"]
+	path = members/implementations/a2ml-rs
+	url = https://github.com/hyperpolymath/a2ml-rs.git
+	branch = main
+[submodule "members/implementations/a2ml_ex"]
+	path = members/implementations/a2ml_ex
+	url = https://github.com/hyperpolymath/a2ml_ex.git
+	branch = main
+[submodule "members/implementations/a2ml_gleam"]
+	path = members/implementations/a2ml_gleam
+	url = https://github.com/hyperpolymath/a2ml_gleam.git
+	branch = main
+[submodule "members/implementations/a2ml-deno"]
+	path = members/implementations/a2ml-deno
+	url = https://github.com/hyperpolymath/a2ml-deno.git
+	branch = main
+[submodule "members/implementations/a2ml-haskell"]
+	path = members/implementations/a2ml-haskell
+	url = https://github.com/hyperpolymath/a2ml-haskell.git
+	branch = main
+[submodule "members/tooling/tree-sitter-a2ml"]
+	path = members/tooling/tree-sitter-a2ml
+	url = https://github.com/hyperpolymath/tree-sitter-a2ml.git
+	branch = main
+[submodule "members/tooling/vscode-a2ml"]
+	path = members/tooling/vscode-a2ml
+	url = https://github.com/hyperpolymath/vscode-a2ml.git
+	branch = main
+[submodule "members/tooling/pandoc-a2ml"]
+	path = members/tooling/pandoc-a2ml
+	url = https://github.com/hyperpolymath/pandoc-a2ml.git
+	branch = main
+[submodule "members/tooling/a2mliser"]
+	path = members/tooling/a2mliser
+	url = https://github.com/hyperpolymath/a2mliser.git
+	branch = main
+[submodule "members/ci/a2ml-validate-action"]
+	path = members/ci/a2ml-validate-action
+	url = https://github.com/hyperpolymath/a2ml-validate-action.git
+	branch = main
+[submodule "members/ci/a2ml-pre-commit"]
+	path = members/ci/a2ml-pre-commit
+	url = https://github.com/hyperpolymath/a2ml-pre-commit.git
+	branch = main
+[submodule "members/examples/a2ml-showcase"]
+	path = members/examples/a2ml-showcase
+	url = https://github.com/hyperpolymath/a2ml-showcase.git
+	branch = main

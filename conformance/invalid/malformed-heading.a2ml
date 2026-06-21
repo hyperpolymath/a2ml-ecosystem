@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: MPL-2.0
+name = "malformed-heading"
+version = "1.0.0"
+
+[broken
+purpose = "The heading starts with an opening bracket but never closes it."

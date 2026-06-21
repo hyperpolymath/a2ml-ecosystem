@@ -1,0 +1,70 @@
+name: Anchor Drift
+
+on:
+  push:
+    branches:
+      - main
+      - claude/gracious-goodall-4vnq77
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  membership-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check membership manifest and submodule declarations
+        run: scripts/check-membership.sh
+      - name: Resolve submodule pins
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive --depth 1
+          git submodule status --recursive
+
+  governance-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hyperpolymath/a2ml-validate-action@main
+        with:
+          path: "."
+          strict: "true"
+          paths-ignore: |
+            vendor/
+            vendored/
+            verified-container-spec/
+            .audittraining/
+            integration/fixtures/
+            test/fixtures/
+            tests/fixtures/
+            members/
+            conformance/
+
+  conformance-positive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hyperpolymath/a2ml-validate-action@main
+        with:
+          path: "conformance/valid"
+          strict: "true"
+
+  conformance-negative:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: negative
+        continue-on-error: true
+        uses: hyperpolymath/a2ml-validate-action@main
+        with:
+          path: "conformance/invalid"
+          strict: "true"
+      - name: Require invalid fixtures to fail
+        if: steps.negative.outcome != 'failure'
+        run: |
+          echo "invalid A2ML fixtures unexpectedly passed"
+          exit 1
