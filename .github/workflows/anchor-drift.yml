@@ -25,6 +25,23 @@ jobs:
           git submodule update --init --recursive --depth 1
           git submodule status --recursive
 
+  upstream-pins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check upstream spec and governance pins
+        run: |
+          anchor=".machine_readable/anchors/ANCHOR.a2ml"
+          test -f "$anchor" || { echo "missing $anchor"; exit 1; }
+          grep -q '\[upstream.spec\]' "$anchor" || { echo "missing [upstream.spec]"; exit 1; }
+          grep -q '\[upstream.governance\]' "$anchor" || { echo "missing [upstream.governance]"; exit 1; }
+          pins="$(grep -E '^[[:space:]]*pin[[:space:]]*=' "$anchor" || true)"
+          echo "upstream pins:"
+          echo "$pins"
+          if echo "$pins" | grep -q 'TODO-tag'; then
+            echo "::notice::upstream pin is still TODO-tag — advisory only until the first standards tag is cut"
+          fi
+
   governance-validation:
     runs-on: ubuntu-latest
     steps:

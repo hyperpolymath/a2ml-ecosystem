@@ -2,7 +2,7 @@
 name = "a2ml-ecosystem"
 version = "0.1.0"
 authority = "coordination-hub"
-updated = "2026-06-21"
+updated = "2026-06-27"
 
 [semantic-authority]
 policy = "satellite"

@@ -1,0 +1,61 @@
+= A2ML Ecosystem Coordination Hub
+:toc: preamble
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// SPDX-FileCopyrightText: 2025-2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+
+`hyperpolymath/a2ml-ecosystem` coordinates implementations, tooling, CI
+integrations, examples, and conformance fixtures for A2ML.
+
+This repository is a satellite of `hyperpolymath/standards`. It does not own
+the A2ML specification or governance rules. The upstream specification and
+governance authority are pinned in
+link:.machine_readable/anchors/ANCHOR.a2ml[ANCHOR.a2ml] by tag.
+
+== Owned Here
+
+* link:.machine_readable/6a2/ECOSYSTEM.a2ml[ECOSYSTEM.a2ml] records the member
+  repository manifest.
+* link:conformance/manifest.a2ml[conformance/manifest.a2ml] indexes the local
+  positive and negative fixtures.
+* link:scripts/check-membership.sh[scripts/check-membership.sh] checks that
+  manifest entries, submodule declarations, and gitlinks stay aligned.
+* `.github/workflows/anchor-drift.yml` runs anchor drift checks in CI.
+
+== Not Owned Here
+
+The A2ML specification is owned by `hyperpolymath/standards`. This hub points
+to `docs/A2ML-SPEC.adoc` there; until the first standards tag is cut, the pin
+is intentionally `TODO-tag`.
+
+== Machine-Readable Layout
+
+Coordination metadata lives under `.machine_readable/` only:
+
+* `anchors/ANCHOR.a2ml` — authority anchor and upstream pins.
+* `6a2/ECOSYSTEM.a2ml` — membership manifest.
+* `6a2/{STATE,META,PLAYBOOK,AGENTIC,NEUROSYM}.a2ml` — hub state, ADRs, playbook,
+  and agentic / neuro-symbolic notes.
+
+link:0-AI-MANIFEST.a2ml[0-AI-MANIFEST.a2ml] at the repository root is the entry
+point that indexes this surface.
+
+== Membership Layout
+
+Member repositories are pinned as submodules under `members/<group>/<name>` on
+their `main` branches. The groups are:
+
+* `implementations`
+* `tooling`
+* `ci`
+* `examples`
+
+`contractiles-a2-lab` is intentionally not a member submodule because it is
+private. It is recorded only as a related project in `ECOSYSTEM.a2ml`.
+
+== Getting Started
+
+See link:SETUP.md[SETUP.md], the tiered quickstarts
+(link:QUICKSTART-USER.adoc[user], link:QUICKSTART-DEV.adoc[dev],
+link:QUICKSTART-MAINTAINER.adoc[maintainer]), link:ROADMAP.adoc[ROADMAP.adoc],
+and link:CLOSE-OUT.md[CLOSE-OUT.md].

@@ -21,8 +21,8 @@ check_member() {
   local actual_branch
   local mode
 
-  if ! grep -Fq "(member \"${name}\" (group \"${group}\")" ECOSYSTEM.a2ml; then
-    fail "ECOSYSTEM.a2ml missing ${group}/${name}"
+  if ! grep -Fq "(member \"${name}\" (group \"${group}\")" .machine_readable/6a2/ECOSYSTEM.a2ml; then
+    fail ".machine_readable/6a2/ECOSYSTEM.a2ml missing ${group}/${name}"
   fi
 
   actual_url="$(git config -f .gitmodules --get "${module}.url" || true)"
@@ -58,8 +58,8 @@ if grep -R "contractiles-a2-lab" .gitmodules members >/dev/null 2>&1; then
   fail "contractiles-a2-lab must not be a member submodule"
 fi
 
-if ! grep -Fq '(related "contractiles-a2-lab"' ECOSYSTEM.a2ml; then
-  fail "ECOSYSTEM.a2ml missing private contractiles-a2-lab related reference"
+if ! grep -Fq '(related "contractiles-a2-lab"' .machine_readable/6a2/ECOSYSTEM.a2ml; then
+  fail ".machine_readable/6a2/ECOSYSTEM.a2ml missing private contractiles-a2-lab related reference"
 fi
 
 if [[ "${failures}" -gt 0 ]]; then

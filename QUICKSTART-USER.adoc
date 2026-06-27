@@ -1,0 +1,16 @@
+= A2ML Ecosystem — User Quickstart
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Skeleton: headings and one-line intents only.
+
+== What this hub is
+The coordination hub and satellite for A2ML; you consume members, not a spec owned here.
+
+== Find a member
+Locate implementations, tooling, CI, and examples via `.machine_readable/6a2/ECOSYSTEM.a2ml`.
+
+== Use the specification
+The A2ML spec lives upstream in `hyperpolymath/standards`, pinned by tag.
+
+== Get help
+See link:README.adoc[README.adoc] and open an issue on the relevant member repository.

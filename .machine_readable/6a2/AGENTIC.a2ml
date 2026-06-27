@@ -1,0 +1,12 @@
+; SPDX-License-Identifier: MPL-2.0
+(agentic
+  (metadata
+    (name "a2ml-ecosystem-agentic")
+    (version "0.1.0")
+    (updated "2026-06-27"))
+  (intent "Agent-facing coordination surface for the a2ml hub.")
+  (capabilities
+    (capability "resolve membership from .machine_readable/6a2/ECOSYSTEM.a2ml")
+    (capability "resolve upstream pins from .machine_readable/anchors/ANCHOR.a2ml")
+    (capability "run conformance gates over conformance/valid and conformance/invalid"))
+  (status "stub — to be expanded with agent playbooks"))

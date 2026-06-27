@@ -1,0 +1,12 @@
+; SPDX-License-Identifier: MPL-2.0
+(state
+  (metadata
+    (name "a2ml-ecosystem-state")
+    (version "0.1.0")
+    (updated "2026-06-27"))
+  (status
+    (phase "coordination-hub scaffolded; close-out in review")
+    (build "rebuilt to .machine_readable canon; conformance corpus verified locally")
+    (upstream-pin "TODO-tag — awaiting first hyperpolymath/standards tag")
+    (membership "12 members declared as submodule gitlinks; pins resolve in CI")
+    (open "see ROADMAP.adoc and PLAYBOOK.a2ml open-threads")))
