@@ -1,5 +1,7 @@
 = A2ML Specification Pointer
 
+// SPDX-License-Identifier: CC-BY-SA-4.0
+
 The A2ML specification is not owned in this coordination hub.
 
 Canonical upstream:

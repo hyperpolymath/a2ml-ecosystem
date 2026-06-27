@@ -1,10 +1,10 @@
+# SPDX-License-Identifier: MPL-2.0
 name: Anchor Drift
 
 on:
   push:
     branches:
       - main
-      - claude/gracious-goodall-4vnq77
   pull_request:
     branches:
       - main
