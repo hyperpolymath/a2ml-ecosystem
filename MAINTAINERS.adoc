@@ -1,0 +1,50 @@
+= Maintainers
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+
+This project is maintained by:
+
+* `@hyperpolymath`
+
+== Ownership
+
+[cols="1,1",options="header"]
+|===
+| Area | Maintainer
+
+| All files | `@hyperpolymath`
+| `README*` | `@hyperpolymath`
+| `LICENSE` | `@hyperpolymath`
+| `SECURITY*` | `@hyperpolymath`
+| `CONTRIBUTING*` | `@hyperpolymath`
+| `.machine_readable/` | `@hyperpolymath`
+| `conformance/` | `@hyperpolymath`
+| `docs/` | `@hyperpolymath`
+| `*.md` / `*.mdx` / `*.adoc` | `@hyperpolymath`
+|===
+
+Review routing is enforced via `.github/CODEOWNERS` so GitHub requests reviews
+automatically.
+
+== Review expectations
+
+* Paired with `.github/CODEOWNERS` so GitHub requests reviews automatically.
+* Target first-response time for issues and pull requests: *best effort*.
+
+== Becoming a maintainer
+
+Additional maintainers may be invited by the founder after a track record of
+helpful, high-quality contributions. There is no obligation to accept
+contributions or to add maintainers.
+
+== Security contact
+
+Report suspected vulnerabilities *privately* — see `SECURITY.md`, or contact
+`@hyperpolymath` directly. Please avoid opening public issues for suspected
+vulnerabilities unless explicitly requested.
+
+== Related files
+
+* `GOVERNANCE.adoc` — decision-making model.
+* `.github/CODEOWNERS` — review routing for this repository.
+* `SECURITY.md` — vulnerability disclosure policy.

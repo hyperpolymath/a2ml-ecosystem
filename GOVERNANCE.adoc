@@ -1,0 +1,93 @@
+= Governance
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+
+[NOTE]
+====
+Personal / solo-project model (Benevolent Maintainer). Last reviewed: 2026-06-27.
+====
+
+== Project status
+
+This project is governed by a *Benevolent Maintainer* model.
+
+The project founder retains final authority over project direction,
+architecture, releases, licensing, and governance.
+
+== Founder
+
+Current founder and lead maintainer:
+
+* Jonathan D.A. Jewell (`@hyperpolymath`)
+
+== Decision making
+
+Normal decisions are made by the founder.
+
+Contributors are encouraged to:
+
+* open issues
+* submit pull requests
+* propose designs
+* discuss alternatives
+
+Feedback is considered in good faith but does not bind the project.
+
+== Contributions
+
+Contributions are welcome. See `CONTRIBUTING.md` for how to get started.
+
+Submitting a contribution does not guarantee acceptance. The founder may:
+
+* accept a contribution
+* request changes
+* reject a contribution
+* replace a contribution with an alternative implementation
+
+without further justification.
+
+== Architectural direction
+
+The founder is responsible for:
+
+* project vision
+* long-term roadmap
+* architecture
+* naming
+* release strategy
+
+== Maintainers
+
+Additional maintainers may be appointed by the founder (see `MAINTAINERS.adoc`).
+Maintainers may review changes, merge pull requests, and manage issues unless
+otherwise restricted. The founder may remove maintainers at any time.
+
+== Code of conduct
+
+All participants are expected to follow the project's `CODE_OF_CONDUCT.md`.
+The founder is the point of contact for enforcement.
+
+== Security
+
+Report suspected vulnerabilities *privately* as described in `SECURITY.md`.
+Please do not disclose vulnerabilities in public issues.
+
+== Forking
+
+Users are free to fork the project according to the license. Forks are
+independent projects and are not considered official unless explicitly
+designated.
+
+== Governance changes
+
+This document may be amended by the founder.
+
+== Project continuity
+
+If the founder permanently ceases maintenance:
+
+. a successor may be appointed;
+. ownership may be transferred;
+. the project may become community-maintained.
+
+Until such designation exists, no successor is implied.
