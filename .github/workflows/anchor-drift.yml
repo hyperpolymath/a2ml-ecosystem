@@ -21,9 +21,11 @@ jobs:
         run: scripts/check-membership.sh
       - name: Resolve submodule pins
         run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive --depth 1
-          git submodule status --recursive
+          # Full (non-shallow) fetch so recorded gitlink pins that are not a
+          # branch tip are retrievable; resolve one level (this hub's members).
+          git submodule sync
+          git submodule update --init
+          git submodule status
 
   upstream-pins:
     runs-on: ubuntu-latest
