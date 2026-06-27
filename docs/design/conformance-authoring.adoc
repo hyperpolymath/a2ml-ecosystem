@@ -1,0 +1,17 @@
+= Design: Conformance Authoring
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Outline: headings and one-line intents only.
+
+== Positive vs negative
+`valid/` must pass clean; `invalid/` must error under strict mode.
+
+== Error vs warning
+Missing identity errors; missing version/license, empty attestation, and
+malformed heading warn (strict-error).
+
+== The license-in-comment gotcha
+Never put the literal license token in a negative fixture's comment.
+
+== Registering fixtures
+Every fixture is listed in `manifest.a2ml` with its expected outcome.

@@ -1,0 +1,31 @@
+<!-- SPDX-License-Identifier: MPL-2.0 -->
+; 0-AI-MANIFEST — root entry point for the a2ml-ecosystem coordination hub.
+; This hub is a SATELLITE of hyperpolymath/standards. It does not own the
+; A2ML specification or governance; it pins them from standards by tag and
+; owns conformance fixtures, the membership manifest, and cross-repo drift CI.
+;
+; Machine-readable coordination metadata lives under .machine_readable/ ONLY.
+(ai-manifest
+  (repository "hyperpolymath/a2ml-ecosystem")
+  (role "coordination-hub")
+  (semantic-authority "satellite")
+  (upstream "hyperpolymath/standards")
+  (machine-readable
+    (anchor ".machine_readable/anchors/ANCHOR.a2ml")
+    (ecosystem ".machine_readable/6a2/ECOSYSTEM.a2ml")
+    (state ".machine_readable/6a2/STATE.a2ml")
+    (meta ".machine_readable/6a2/META.a2ml")
+    (playbook ".machine_readable/6a2/PLAYBOOK.a2ml")
+    (agentic ".machine_readable/6a2/AGENTIC.a2ml")
+    (neurosym ".machine_readable/6a2/NEUROSYM.a2ml"))
+  (owned-here
+    (conformance "conformance/")
+    (membership ".machine_readable/6a2/ECOSYSTEM.a2ml")
+    (drift-ci ".github/workflows/anchor-drift.yml"))
+  (not-owned-here
+    (spec (repo "hyperpolymath/standards") (path "docs/A2ML-SPEC.adoc") (pin "TODO-tag"))
+    (governance (repo "hyperpolymath/standards") (path "GOVERNANCE.adoc") (pin "TODO-tag")))
+  (entrypoints
+    (human "README.adoc")
+    (roadmap "ROADMAP.adoc")
+    (close-out "CLOSE-OUT.md")))

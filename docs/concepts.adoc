@@ -1,0 +1,19 @@
+= A2ML Ecosystem — Concepts
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Outline: headings and one-line intents only.
+
+== Coordination hub
+A repository that coordinates members without owning the specification.
+
+== Satellite of standards
+Spec and governance are pinned from `hyperpolymath/standards` by tag.
+
+== Membership manifest
+`ECOSYSTEM.a2ml` enumerates members as pinned submodules across four groups.
+
+== Conformance corpus
+Labelled valid/invalid fixtures gate the validator in CI.
+
+== Drift control
+Pin + verify in CI; upstream is never hard-linked into the hub.

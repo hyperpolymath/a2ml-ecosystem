@@ -1,0 +1,11 @@
+; SPDX-License-Identifier: MPL-2.0
+(neurosym
+  (metadata
+    (name "a2ml-ecosystem-neurosym")
+    (version "0.1.0")
+    (updated "2026-06-27"))
+  (intent "Neuro-symbolic notes bridging A2ML symbolic structure and learned tooling.")
+  (notes
+    (note "A2ML files are symbolic S-expression or sectioned manifests amenable to formal checks.")
+    (note "Conformance fixtures provide a labelled corpus (valid/invalid) usable for evaluation."))
+  (status "stub — to be expanded"))

@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: MPL-2.0
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Build / tooling output
+/dist/
+/build/
+/.cache/
+node_modules/
+
+# Validation scratch
+*.log
+expected.json.tmp

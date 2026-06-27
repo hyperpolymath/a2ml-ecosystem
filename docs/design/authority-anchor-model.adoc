@@ -1,0 +1,16 @@
+= Design: Authority Anchor Model
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Outline: headings and one-line intents only.
+
+== Anchor
+`ANCHOR.a2ml` declares `authority="coordination-hub"` and `policy="satellite"`.
+
+== Upstream pins
+`[upstream.spec]` and `[upstream.governance]` pin `standards` by tag.
+
+== Local ownership
+Conformance fixtures, membership manifest, and drift CI are owned here.
+
+== Attestation
+The anchor records that the hub defers semantic authority upstream.

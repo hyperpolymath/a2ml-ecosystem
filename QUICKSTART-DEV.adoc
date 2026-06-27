@@ -1,0 +1,16 @@
+= A2ML Ecosystem — Developer Quickstart
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Skeleton: headings and one-line intents only.
+
+== Clone with submodules
+Clone the hub and initialise member submodules (or run `scripts/init-submodules.sh`).
+
+== Check membership integrity
+Run `scripts/check-membership.sh` to align manifest, `.gitmodules`, and gitlinks.
+
+== Add a member or conformance case
+Follow the `add-member` / `add-conformance-case` steps in `.machine_readable/6a2/PLAYBOOK.a2ml`.
+
+== Run conformance locally
+Validate `conformance/valid` (0 errors) and `conformance/invalid` strict (every case errors).

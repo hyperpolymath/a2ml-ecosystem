@@ -1,0 +1,28 @@
+= A2ML Ecosystem Roadmap
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+
+== Outstanding Decisions
+
+* *Spec pin.* Pin the canonical A2ML spec tag in `hyperpolymath/standards` and
+  replace `TODO-tag` in `.machine_readable/anchors/ANCHOR.a2ml`.
+* *Membership ratification.* Ratify `a2mliser` as a tooling member and confirm
+  `contractiles-a2-lab` remains a private cross-reference (never a submodule).
+
+== Tracked Issues
+
+* Pin canonical spec in standards + replace TODO-tag — `decision`, `governance`
+* Member rollout: ANCHOR satellite+pin+conformance CI; enable upstream-pins — `rollout`
+* Canonical parse-AST (expected.json) + expand conformance corpus — `conformance`
+* Governance parity: stamp standard `.machine_readable` + CONTRIBUTING/SECURITY/COC
+  from standards — `governance`
+* Author tiered dev/maintainer/user docs + concept guides — `docs`
+* Reference this hub from developer-ecosystem / standards — `meta`
+* Ratify a2mliser (in) + contractiles-a2-lab (cross-ref) — `decision`
+
+== Sketch Areas
+
+* Canonical parse-AST artifacts (`expected.json`) alongside fixtures.
+* Drift dashboard summarising submodule pin freshness against upstream.
+* Automated pin-bump tooling once the first standards tag exists.
+* Expanded negative corpus covering further validator edge cases.

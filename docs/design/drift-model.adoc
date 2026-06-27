@@ -1,0 +1,16 @@
+= Design: Drift Model
+
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Outline: headings and one-line intents only.
+
+== Problem
+Keep the hub aligned with upstream spec/governance and member pins without copying.
+
+== Pin + verify
+Reference upstream by tag; verify presence and freshness in the anchor-drift CI.
+
+== Submodule pins
+Members are gitlinks on `main`; CI resolves them to detect drift.
+
+== Failure modes
+Stale pin, missing member, and manifest/submodule mismatch.

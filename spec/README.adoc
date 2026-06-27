@@ -8,4 +8,5 @@ Canonical upstream:
 * Path: `docs/A2ML-SPEC.adoc`
 * Pin: `TODO-tag`
 
-The corresponding governance authority is pinned in link:../ANCHOR.a2ml[].
+The corresponding governance authority is pinned in
+link:../.machine_readable/anchors/ANCHOR.a2ml[ANCHOR.a2ml].
