@@ -8,6 +8,10 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    # Weekly proactive run so member-pin drift surfaces even with no push.
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -26,6 +30,22 @@ jobs:
           git submodule sync
           git submodule update --init
           git submodule status
+      - name: Report pin drift vs member main (advisory)
+        continue-on-error: true
+        run: |
+          # Early-warning, non-failing: flag any member pinned BEHIND its main
+          # tip — the precursor state to a pin becoming unreachable (the
+          # "not our ref" failure the resolve step above hits only once a pin
+          # is fully orphaned). Every member declares branch=main, so the
+          # member's main tip is the correct comparison point.
+          git submodule foreach --quiet '
+            pinned="$(git rev-parse --short=10 HEAD)"
+            git fetch -q origin main 2>/dev/null || true
+            tip="$(git rev-parse --short=10 FETCH_HEAD 2>/dev/null || echo "")"
+            if [ -n "$tip" ] && [ "$pinned" != "$tip" ]; then
+              echo "::warning title=submodule pin drift::$sm_path pinned $pinned, member main is $tip — re-pin before it is orphaned"
+            fi
+          '
 
   upstream-pins:
     runs-on: ubuntu-latest
