@@ -25,7 +25,7 @@ link:.machine_readable/anchors/ANCHOR.a2ml[ANCHOR.a2ml] by tag.
 == Not Owned Here
 
 The A2ML specification is owned by `hyperpolymath/standards`. This hub points
-to `docs/A2ML-SPEC.adoc` there; until the first standards tag is cut, the pin
+to `a2ml/SPEC.adoc` there; until the first standards tag is cut, the pin
 is intentionally `TODO-tag`.
 
 == Machine-Readable Layout
