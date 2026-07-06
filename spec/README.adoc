@@ -7,8 +7,9 @@ The A2ML specification is not owned in this coordination hub.
 Canonical upstream:
 
 * Repository: `hyperpolymath/standards`
-* Path: `docs/A2ML-SPEC.adoc`
-* Pin: `TODO-tag`
+* Path: `a2ml/SPEC.adoc` (typed core + markup surface, v1.1.0)
+* Companion: `a2ml/RECORD-DIALECT-SPEC.adoc` (record surface for descriptiles, v1.0.0)
+* Pin: `891b1ed6164478616cb3375f328c6487ccb13f80` (commit pin; no A2ML release tag cut yet)
 
 The corresponding governance authority is pinned in
 link:../.machine_readable/anchors/ANCHOR.a2ml[ANCHOR.a2ml].
