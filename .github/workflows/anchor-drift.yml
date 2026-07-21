@@ -20,7 +20,7 @@ jobs:
   membership-integrity:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Check membership manifest and submodule declarations
         run: scripts/check-membership.sh
       - name: Resolve submodule pins
@@ -50,7 +50,7 @@ jobs:
   upstream-pins:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Check upstream spec and governance pins
         run: |
           anchor=".machine_readable/anchors/ANCHOR.a2ml"
@@ -67,7 +67,7 @@ jobs:
   governance-validation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: hyperpolymath/a2ml-validate-action@main
         with:
           path: "."
@@ -86,7 +86,7 @@ jobs:
   conformance-positive:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: hyperpolymath/a2ml-validate-action@main
         with:
           path: "conformance/valid"
@@ -95,7 +95,7 @@ jobs:
   conformance-negative:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - id: negative
         continue-on-error: true
         uses: hyperpolymath/a2ml-validate-action@main
