@@ -1,0 +1,33 @@
+<!--
+SPDX-License-Identifier: CC-BY-SA-4.0
+Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
+# TEST-NEEDS.md — a2ml-validate-action
+
+## CRG Grade: C — ACHIEVED 2026-04-04
+
+## Current Test State
+
+| Category | Count | Notes |
+|----------|-------|-------|
+| Test directories | 2 | Location(s): /verification/tests, /tests |
+| CI workflows | 14 | Running tests on GitHub Actions |
+| Tests | Present | Configured in CI workflows |
+
+## What's Covered
+
+- [x] Tests present and running
+- [x] CI integration active
+
+## Still Missing (for CRG B+)
+
+- [ ] Code coverage reports (codecov integration)
+- [ ] Detailed test documentation in CONTRIBUTING.md
+- [ ] Integration tests beyond unit tests
+- [ ] Performance benchmarking suite
+
+## Run Tests
+
+```bash
+(check Makefile/justfile/package.json for test command)
+```

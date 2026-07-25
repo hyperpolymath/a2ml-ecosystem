@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Jewell"
+  given-names: "Jonathan"
+  orcid: "https://orcid.org/0000-0000-0000-0000" # Placeholder
+title: "a2ml-haskell"
+version: 0.1.0
+date-released: 2026-07-08
+url: "https://github.com/hyperpolymath/a2ml-haskell"
+repository-code: "https://github.com/hyperpolymath/a2ml-haskell"
+license: MPL-2.0
+keywords:
+  - "rsr"
+  - "formal-verification"
+  - "neurosymbolic"
+  - "provenance"

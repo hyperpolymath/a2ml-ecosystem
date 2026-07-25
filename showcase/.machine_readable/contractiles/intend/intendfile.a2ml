@@ -1,0 +1,15 @@
+// intendfile.a2ml for a2ml-showcase
+// SPDX-License-Identifier: MPL-2.0
+// Generated: 2026-04-08T20:03:43+01:00
+
+intendfile {
+    name: "a2ml-showcase"
+    version: "1.0.0"
+    description: "intendfile contractile for a2ml-showcase"
+    
+    // Basic intendfile configuration
+    enabled: true
+    
+    // Repository-specific intend settings will be added here
+    // This preserves the existing contractile structure and naming convention
+}

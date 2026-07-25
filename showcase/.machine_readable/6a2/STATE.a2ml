@@ -1,0 +1,17 @@
+# STATE.a2ml — a2ml-showcase
+project = "a2ml-showcase"
+version = "0.1.0"
+last-updated = "2026-04-13"
+
+[status]
+phase = "example"
+grade = "E"
+readiness = "C" # 8/10 (Content-only)
+
+[features]
+content = "A2ML documentation and template examples"
+attestation = "AI Attestation Markup Language (A2ML) showcase"
+
+[audit]
+last-pass = "2026-04-13"
+passed = true

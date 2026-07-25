@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: MPL-2.0
+
+[project]
+name = "a2ml_gleam"
+description = "A2ML Gleam implementation"
+
+[container]
+base = "cgr.dev/chainguard/wolfi-base:latest"

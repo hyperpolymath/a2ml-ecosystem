@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: MPL-2.0
+
+[project]
+name = "a2ml_ex"
+description = "A2ML Elixir implementation"
+
+[container]
+base = "cgr.dev/chainguard/wolfi-base:latest"
+
+[build]
+builder = "elixir"

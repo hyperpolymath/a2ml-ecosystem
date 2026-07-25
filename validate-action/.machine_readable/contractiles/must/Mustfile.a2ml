@@ -1,0 +1,110 @@
+# SPDX-License-Identifier: MPL-2.0
+# Mustfile — Physical state contract for standards
+# Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+#
+# What MUST be true about this repository. Hard requirements.
+# Run with: must check
+# Fix with: must fix (where a deterministic fix exists)
+
+@abstract:
+Physical-state invariants for the hyperpolymath `standards` monorepo (specs,
+machine-readable artefacts, contractiles, registry). These are hard
+requirements — CI and pre-commit hooks fail if any check fails.
+@end
+
+## File Presence
+
+### license-present
+- description: LICENSE file must exist
+- run: test -f LICENSE
+- severity: critical
+
+### licence-policy-present
+- description: LICENCE-POLICY.adoc (canonical licence policy) must exist
+- run: test -f LICENCE-POLICY.adoc
+- severity: critical
+
+### readme-present
+- description: README.adoc must exist
+- run: test -f README.adoc
+- severity: critical
+
+### security-policy
+- description: SECURITY.md must exist
+- run: test -f SECURITY.md
+- severity: critical
+
+### ai-manifest
+- description: 0-AI-MANIFEST.a2ml must exist
+- run: test -f 0-AI-MANIFEST.a2ml
+- severity: critical
+
+### machine-readable-dir
+- description: .machine_readable/ directory must exist
+- run: test -d .machine_readable
+- severity: critical
+
+### licensing-policy-machine-readable
+- description: machine-readable licensing policy must exist
+- run: test -f .machine_readable/licensing-policy.toml
+- severity: critical
+
+## Licensing (owner ruling 2026-06-04)
+
+### code-spdx-mpl
+- description: code/config/scripts carry SPDX-License-Identifier MPL-2.0
+- run: head -8 Justfile | grep -q 'SPDX-License-Identifier: MPL-2.0'
+- severity: critical
+- notes: Full-tree enforcement is the spdx-policy-guard; this is a canary.
+
+### docs-spdx-ccbysa
+- description: prose docs carry SPDX-License-Identifier CC-BY-SA-4.0
+- run: head -8 README.adoc | grep -q 'SPDX-License-Identifier: MPL-2.0'
+- severity: critical
+- notes: Canary for the docs=CC-BY-SA-4.0 rule.
+
+### licenses-texts-present
+- description: LICENSES/ carries the canonical text for every SPDX id in use
+- run: test -f LICENSES/MPL-2.0.txt && test -f LICENSES/CC-BY-SA-4.0.txt
+- severity: critical
+
+### no-pmpl-outside-carveout
+- description: PMPL appears in no standards-authored header (carve-out = 3 repos only)
+- run: test -z "$(git ls-files ':!:consent-aware-http/**' ':!:*palimpsest*' ':!:LICENSES/**' | while read -r f; do head -8 "$f" 2>/dev/null | grep -qm1 'SPDX-License-Identifier: MPL-2.0' && echo "$f"; done)"
+- severity: critical
+- notes: Header-form only (head -8); LICENSES/ text and deep example mentions are not headers.
+
+### policy-no-contradiction
+- description: LICENCE-POLICY.adoc and licensing-policy.toml agree (both name CC-BY-SA-4.0)
+- run: grep -q 'CC-BY-SA-4.0' LICENCE-POLICY.adoc && grep -q 'CC-BY-SA-4.0' .machine_readable/licensing-policy.toml
+- severity: critical
+
+## Structure
+
+### no-loose-contractile-in-root
+- description: no .contractile files loose in repo root — they live in .machine_readable/
+- run: test -z "$(ls *.contractile 2>/dev/null)"
+- severity: warning
+
+### registry-machine-readable
+- description: REGISTRY.a2ml lives under .machine_readable/ (generated index)
+- run: test -f .machine_readable/REGISTRY.a2ml
+- severity: warning
+
+## CI / Workflow Hardening
+
+### actions-sha-pinned
+- description: every GitHub Action is pinned to a 40-char commit SHA
+- run: ! grep -rEn 'uses:[[:space:]]+[^@]+@(v?[0-9.]+|main|master)([[:space:]]|$)' .github/workflows/ 2>/dev/null
+- severity: critical
+
+### jobs-have-timeout
+- description: every non-reusable-caller job declares timeout-minutes
+- verification: governance check — reusable-workflow caller jobs (uses: ./...) are exempt
+- severity: high
+- notes: Reusable callers cannot carry timeout-minutes; the timeout lives in the reusable.
+
+### registry-generated-not-hand-edited
+- description: REGISTRY.a2ml is regenerated via scripts/build-registry.sh, never hand-edited
+- run: test -f scripts/build-registry.sh
+- severity: high

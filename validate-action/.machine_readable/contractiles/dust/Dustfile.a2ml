@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: MPL-2.0
+# Dustfile — Cleanup and hygiene contract for standards
+# Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+#
+# What should be cleaned up. Housekeeping, not blockers.
+# Run with: dust status
+# Roll back with: dust rollback <name>
+
+@abstract:
+Cleanup and hygiene items for the `standards` monorepo. These are maintenance
+tasks — not blocking, but should be addressed. Destructive actions are
+dry-run by default and gated behind --apply.
+@end
+
+## Stale Files
+
+### no-stale-snapshots
+- description: no dated STATUS/COMPLETION snapshot files in root
+- run: test -z "$(ls *-STATUS-*.md *-COMPLETION-*.md 2>/dev/null)"
+- severity: info
+
+### no-next-steps
+- description: NEXT_STEPS.md is superseded by ROADMAP.adoc
+- run: test ! -f NEXT_STEPS.md
+- severity: info
+
+### no-ai-djot
+- description: AI.djot is superseded by 0-AI-MANIFEST.a2ml
+- run: test ! -f AI.djot
+- severity: warning
+
+## Format Duplicates
+
+### no-duplicate-readme
+- description: only one README format (.adoc canonical)
+- run: test ! -f README.md || test ! -f README.adoc
+- severity: warning
+
+### no-duplicate-licence-policy
+- description: only one licence-policy doc (LICENCE-POLICY.adoc canonical)
+- run: test ! -f docs/LICENSE-POLICY.md || test ! -f LICENCE-POLICY.adoc
+- severity: warning
+- notes: resolved 2026-06-04 — deleted the stale docs/LICENSE-POLICY.md (it wrongly asserted standards=AGPL); LICENCE-POLICY.adoc is the sole source of truth. Probe stands guard against reintroduction.
+
+## Licence Hygiene
+
+### no-scaffold-sentinel-leak
+- description: no PLMP-/PMLP- scaffold sentinels survive as real SPDX values
+- run: test -z "$(git ls-files | xargs grep -lE 'SPDX-License-Identifier:[[:space:]]*(PLMP|PMLP)-' 2>/dev/null)"
+- severity: warning
+- notes: A leak is a process bug — fix by re-running scaffold substitution, NOT by hand (policy A5).
+
+### no-doubled-or-later
+- description: no doubled `-or-later-or-later` SPDX artifacts
+- run: test -z "$(git ls-files | xargs grep -lE 'SPDX-License-Identifier:[^\n]*-or-later-or-later' 2>/dev/null)"
+- severity: info
+
+## Build / Generated Artifacts
+
+### no-tracked-deno-cache
+- description: no Deno cache tracked in git
+- run: test -z "$(git ls-files '**/.deno/**' 2>/dev/null)"
+- severity: warning
+
+### registry-not-stale
+- description: REGISTRY.a2ml regenerated after spec changes (run: just registry)
+- verification: re-run scripts/build-registry.sh and diff; non-empty diff means stale
+- severity: info

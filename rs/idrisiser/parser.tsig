@@ -1,0 +1,7 @@
+-- SPDX-License-Identifier: MPL-2.0
+-- Type signatures for the a2ml-rs parser (src/parser.rs)
+-- Format: name : Type (idrisiser type-sig format)
+
+parse : String -> Result Document A2mlError
+parse_file : Path -> Result Document A2mlError
+parse_inlines : String -> List Inline

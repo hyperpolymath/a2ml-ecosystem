@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: MPL-2.0
+# .hypatia-ignore
+
+cicd_rules/banned_language_file:rescript.json
+cicd_rules/banned_language_file:jsr.json
+cicd_rules/banned_language_file:deno.json

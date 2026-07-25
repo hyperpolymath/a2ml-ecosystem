@@ -1,0 +1,160 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+= a2ml-rs — Show Me The Receipts
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+:toc:
+:icons: font
+
+The README makes claims. This file backs them up.
+
+== A2ML Is a Parser and Renderer for Attested Markup Language
+
+[quote, README]
+____
+Parser and renderer for A2ML (Attested Markup Language). A2ML is a lightweight
+markup format designed for AI-agent communication that carries built-in
+attestation metadata, enabling provenance tracking and trust-level annotations
+on document content.
+____
+
+A2ML (Attested Markup Language) extends a Markdown-like surface syntax with
+two first-class constructs: `@directives` (machine-readable metadata prefixed
+with `@`) and `!attest` blocks that record identity, role, and trust-level on
+any piece of content. The parser in `src/parser.rs` is a line-by-line state
+machine: it accumulates paragraph text in a buffer, recognises headings,
+directives, attestation lines, fenced code blocks, block quotes, thematic
+breaks, and ordered/unordered lists, then flushes each recognised structure
+into a `Vec<Block>`. The renderer in `src/renderer.rs` serialises the same
+`Document` AST back to canonical A2ML text, making round-trips deterministic.
+
+**Caveat:** The MVP parser is single-pass and line-oriented — it does not
+handle nested block structures beyond one level of block-quote recursion.
+Multi-line directives (as used in the Haskell variant with `@name: ... @end`
+blocks) are not yet supported; directives here are single-line `@name value`
+pairs only. No HTML or PDF output is built in — use `pandoc-a2ml` (the Lua
+reader in `hyperpolymath/pandoc-a2ml`) for format conversion.
+
+- Implementation: `src/parser.rs` (parse, parse_file), `src/renderer.rs` (render)
+- Core types: `src/types.rs` (Document, Block, Inline, Directive, Attestation, TrustLevel, Manifest)
+- Error surface: `src/error.rs` (A2mlError::ParseError, A2mlError::Io, A2mlError::RenderError)
+- Learn more: https://docs.rs/a2ml (forthcoming), https://github.com/hyperpolymath/a2ml
+
+== Attestation Chain Is a First-Class Type
+
+[quote, src/types.rs]
+____
+An A2ML document consists of a sequence of Block elements, each of which may
+contain Inline content. Directive blocks provide machine-readable metadata,
+and Attestation records capture the provenance chain for AI-generated or
+human-reviewed content.
+____
+
+The `TrustLevel` enum defines four ordered levels: `Unverified` → `Automated`
+→ `Reviewed` → `Verified`. Attestations carry `identity` (person or agent
+name), `role` (e.g. `"author"` or `"agent"`), `trust_level`, an optional
+ISO-8601 timestamp, and a free-form note. The `Manifest` struct is a
+convenience aggregate that extracts the `@version` directive and all
+attestations from a `Document` into a single value for programmatic inspection.
+The `parser.rs` attestation parser (`parse_attestation`) requires `identity`,
+`role`, and `trust` fields; unknown keys are silently skipped for
+forward-compatibility.
+
+**Caveat:** Attestations are syntactic declarations, not cryptographic
+signatures. There is no signature verification or public-key infrastructure
+here — that layer belongs in `cookie-rebound` and the broader Groove protocol
+stack. `TrustLevel::Verified` means _claimed_ verified, not proven.
+
+- Implementation: `src/types.rs:167–293` (Attestation, TrustLevel, Manifest)
+- Parser path: `src/parser.rs:398–445` (parse_attestation)
+- Learn more: https://www.rfc-editor.org/rfc/rfc9068 (JWT for comparison)
+
+== Safe Rust Without unsafe_code
+
+[quote, src/lib.rs]
+____
+#![forbid(unsafe_code)]
+____
+
+The crate gate is `#![forbid(unsafe_code)]` — the compiler rejects any
+`unsafe` block at the crate root. Dependencies are minimal: `serde`/`serde_derive`
+for JSON serialisation, `thiserror` for ergonomic error types, and `criterion`
+for benchmarks only. There are no proc-macro or build-script dependencies that
+could introduce hidden unsafe paths.
+
+**Caveat:** Transitive dependencies (serde internals, thiserror) are not under
+the same `forbid` gate. Use `cargo-geiger` or `panic-attacker` to audit the
+full dependency tree if deploying in a security-sensitive context.
+
+- Crate root: `src/lib.rs:1` (#![forbid(unsafe_code)])
+- Learn more: https://doc.rust-lang.org/reference/unsafe-blocks.html
+
+== MPL-2.0 Fallback for crates.io
+
+[quote, Cargo.toml]
+____
+license = "MPL-2.0"
+# (MPL-2.0 preferred; MPL-2.0 required for crates.io)
+____
+
+crates.io requires an OSI-approved SPDX identifier; MPL-2.0 is not
+yet recognised by OSI. Every source file carries the dual comment:
+`// SPDX-License-Identifier: CC-BY-SA-4.0 // (MPL-2.0 preferred; ...)`.
+This follows the project-wide fallback policy documented in CLAUDE.md.
+
+**Caveat:** The published crate on crates.io is effectively MPL-2.0. Any
+fork or redistribution outside the crates.io ecosystem should honour
+MPL-2.0 where the platform permits it.
+
+- License file: `LICENSE` (MPL-2.0 text), `LICENSE-MPL-2.0`
+- Learn more: https://github.com/hyperpolymath/palimpsest-license
+
+== Dogfooded Across The Account
+
+[cols="1,2"]
+|===
+| Technology | Also Used In
+
+| **A2ML format** | https://github.com/hyperpolymath/a2ml-haskell[a2ml-haskell] (Haskell binding), https://github.com/hyperpolymath/pandoc-a2ml[pandoc-a2ml] (Lua reader), https://github.com/hyperpolymath/tree-sitter-a2ml[tree-sitter-a2ml] (grammar)
+
+| **Rust + thiserror** | https://github.com/hyperpolymath/panic-attacker[panic-attacker], https://github.com/hyperpolymath/patch-bridge[patch-bridge], https://github.com/hyperpolymath/protocol-squisher[protocol-squisher]
+
+| **Criterion benchmarks** | https://github.com/hyperpolymath/patch-bridge[patch-bridge] (bridge_bench.rs), https://github.com/hyperpolymath/a2ml-haskell[a2ml-haskell] (a2ml-bench)
+
+| **SPDX MPL-2.0 fallback** | https://github.com/hyperpolymath/a2ml-haskell[a2ml-haskell] (Hackage policy)
+
+| **0-AI-MANIFEST.a2ml gatekeeper** | All RSR repositories — this crate is itself an implementation of the format it parses
+|===
+
+== File Map
+
+[cols="1,2"]
+|===
+| Path | Proves
+
+| `src/lib.rs` | Crate root: module declarations, re-exports, `#![forbid(unsafe_code)]` gate
+
+| `src/types.rs` | Core AST: `Document`, `Block`, `Inline`, `Directive`, `Attestation`, `TrustLevel`, `Manifest` — the canonical data model
+
+| `src/parser.rs` | Line-by-line parser: `parse(&str) -> Result<Document>`, `parse_file(Path) -> Result<Document>`, internal `ParserState`, all block and inline parsers
+
+| `src/renderer.rs` | Canonical serialiser: `render(&Document) -> Result<String>`, block/inline/directive/attestation rendering
+
+| `src/error.rs` | `A2mlError` enum: `ParseError { line, col, message }`, `Io(std::io::Error)`, `RenderError`
+
+| `Cargo.toml` | Crate metadata: name=`a2ml`, version=`0.1.0`, keywords, categories, dependency pinning
+
+| `tests/e2e_test.rs` | End-to-end parse→render→re-parse round-trip tests
+
+| `tests/property_test.rs` | Property-based tests (QuickCheck-style via proptest)
+
+| `tests/aspect_test.rs` | Cross-cutting concern tests (error paths, edge cases)
+
+| `benches/a2ml_bench.rs` | Criterion benchmarks for parse and render hot paths
+
+| `tests/fuzz/` | Fuzz corpus placeholder (AFL/cargo-fuzz integration target)
+
+| `0-AI-MANIFEST.a2ml` | AI session gatekeeper — read first before modifying any file
+
+| `.machine_readable/` | A2ML state files: STATE.a2ml, ECOSYSTEM.a2ml, META.a2ml, AGENTIC.a2ml
+
+| `verification/` | Formal verification artefacts (Idris2 proofs, pending)
+|===

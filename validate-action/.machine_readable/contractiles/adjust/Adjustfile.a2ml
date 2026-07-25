@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: MPL-2.0
+# Adjustfile — Drift-tolerance contract for standards
+# Author: Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+#
+# Cumulative-drift catchment: tolerance bands + corrective actions.
+# Authority: advisory (Yard) — continue-with-warnings; auto_fix where deterministic.
+# Run with: adjust check
+# Fix with: adjust fix (applies deterministic patches; advisory otherwise)
+
+@abstract:
+Drift tolerances and corrective actions for the `standards` monorepo. Unlike
+MUST (hard gate), ADJUST tracks cumulative drift against tolerance bands and
+proposes corrective actions. Advisory — it warns and trends, it does not block.
+@end
+
+## Licence Drift
+
+### spdx-header-drift
+- description: estate-family SPDX headers stay on policy (code=MPL-2.0, docs=CC-BY-SA-4.0)
+- tolerance: 0 standards-authored files off-policy (excludes carve-out + third-party)
+- corrective: owner-only, manual, per-file — NEVER an automated sweep (policy A2)
+- severity: advisory
+- notes: PLMP-/PMLP- sentinels are scaffold leaks, fixed by re-substitution, not relicensing.
+
+### deep-mention-drift
+- description: in-body SPDX example/emitter strings track the current policy ids
+- tolerance: emitters (generators) must emit MPL-2.0 / CC-BY-SA-4.0; doc examples may lag
+- corrective: update header-emitting generators first; doc examples in a follow-up pass
+- severity: advisory
+
+## Documentation Drift
+
+### adoc-not-md
+- description: docs are AsciiDoc except GitHub-required .md (SECURITY/CONTRIBUTING/CODE_OF_CONDUCT/CHANGELOG)
+- tolerance: new prose docs are *.adoc; existing *.md migrate opportunistically
+- corrective: convert *.md → *.adoc (no duplicate formats)
+- severity: advisory
+
+### registry-staleness
+- description: REGISTRY.a2ml reflects the current spec tree
+- tolerance: regenerate when specs are added/moved
+- corrective: run `bash scripts/build-registry.sh` (or `just registry`)
+- severity: advisory
+
+## Structural Drift
+
+### contractile-trident-completeness
+- description: each contractile verb has its full trident (Xfile.a2ml + verb.ncl + verb.k9.ncl)
+- tolerance: all 6 verbs present per .machine_readable/contractiles/INDEX.a2ml
+- corrective: re-run the contractiles scaffold for any missing trident member
+- severity: advisory
+
+### no-foreign-project-scaffold
+- description: contractile declaration files describe THIS repo, not a scaffold source
+- tolerance: 0 files naming another project (e.g. "Burble") in their declaration
+- corrective: re-run scaffold substitution OR rewrite for `standards`
+- severity: advisory
+- notes: 2026-06-04 — the Must/Adjust/Dust trident files were scaffold leaks naming the template source project; rewritten for `standards`.

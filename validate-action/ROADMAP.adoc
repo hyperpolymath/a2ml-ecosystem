@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= A2ml Validate Action Roadmap
+
+== Current Status
+
+v1.0.0 released 2026-05-29 — stable. See `CHANGELOG.md`.
+
+== Milestones
+
+=== v0.1.0 - Foundation (released)
+* [x] Core functionality
+* [x] Basic documentation
+* [x] CI/CD pipeline
+
+=== v1.0.0 - Stable Release (released 2026-05-29)
+* [x] Full feature set
+* [x] Comprehensive tests
+* [x] Production ready
+
+== Future Directions
+
+_To be determined based on community feedback._

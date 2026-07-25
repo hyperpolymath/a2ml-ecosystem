@@ -1,0 +1,67 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+= a2ml_ex — Show Me The Receipts
+:toc:
+:icons: font
+
+The README makes claims. This file backs them up.
+
+== Real Claims From The README
+
+**Claim 1: "Parse A2ML documents from strings or files… Render AST back to A2ML surface syntax (round-trip support)"** (README, Features section)
+
+The parser in `lib/a2ml/parser.ex` reads A2ML-formatted text and emits a typed AST via `A2ML.Parser.parse/1`, which returns `{:ok, Document.t()}` or `{:error, reason}`. The parser extracts:
+
+* Title from H1 heading (`# Title`)
+* Blocks (paragraphs, headings, code blocks, directives, attestations)
+* Directives starting with `@` (e.g., `@include(file="chapter1.a2ml")`)
+* Attestation provenances blocks starting with `!attest`
+
+The renderer in `lib/a2ml/renderer.ex` reconstructs the surface syntax from the AST via `A2ML.Renderer.render/1`, returning `{:ok, rendered_string}`. This enables round-trip: parse → modify AST → render produces valid A2ML again.
+
+*How it works:* The parser splits input by newlines, identifies block boundaries, and classifies each line. The `Attestation` struct stores identity, role, trust level, and timestamp. Directives are key-value pairs in `@name(key=val): value` syntax. The renderer walks the AST and reconstructs each element. Caveat: Whitespace normalization and comment stripping mean the rendered output may not be byte-for-byte identical to the input, though semantic content is preserved.
+
+**Claim 2: "Trust-level hierarchy: :unverified, :automated, :reviewed, :verified"** (README, Trust Levels section)
+
+The `A2ML.Types.TrustLevel` enum in `lib/a2ml/types.ex` defines a four-tier hierarchy. The parser extracts trust level from attestation blocks (`trust-level: verified`) and stores it on the `Attestation` struct. The types module enforces the hierarchy: `:unverified` < `:automated` < `:reviewed` < `:verified`. Document-wide trust is derived from the minimum trust level of all attestations.
+
+*How it works:* Attestation blocks declare `trust-level: <level>`. When rendering, the renderer includes the trust level in the output. Clients can filter documents by minimum trust requirement. Caveat: Trust levels are advisory metadata—the library does not cryptographically verify signatures. Signature verification (mentioned in the README's example) is a future feature; currently `signature:` field is stored as a string literal without validation.
+
+== Dogfooted Across The Account
+
+a2ml_ex is part of the A2ML ecosystem, which includes:
+
+* link:https://github.com/hyperpolymath/a2ml-deno[a2ml-deno] — Deno/ReScript implementation (primary)
+* link:https://github.com/hyperpolymath/tree-sitter-a2ml[tree-sitter-a2ml] — Tree-sitter grammar for syntax highlighting
+* link:https://github.com/hyperpolymath/a2ml-haskell[a2ml-haskell] — Haskell implementation
+* link:https://github.com/hyperpolymath/standards[standards] — A2ML spec (K9 service specification)
+
+The Elixir implementation enables A2ML parsing in BEAM-based systems (Elixir, Erlang). It follows the same type structure as the Deno version.
+
+== Technology Choices
+
+[cols="1,2,3"]
+|===
+| Technology | Learn More | Why
+
+| **Elixir** | https://elixir-lang.org | BEAM runtime, immutable data structures, pattern matching for AST
+| **ExUnit** | https://hexdocs.pm/ex_unit | Testing framework (no external test dependency)
+| **Hex.pm** | https://hex.pm | Package distribution (MPL-2.0 requirement for Hex ecosystem)
+|===
+
+== File Map
+
+[cols="1,2,3"]
+|===
+| Path | What's There | Key Details
+
+| `lib/a2ml/parser.ex` | A2ML text parser | Reads lines, extracts title, parses blocks, directives, attestations
+| `lib/a2ml/renderer.ex` | AST-to-text renderer | Reconstructs A2ML surface syntax from `Document` struct
+| `lib/a2ml/types.ex` | Type definitions | `Document`, `Block`, `Inline`, `Directive`, `Attestation`, `TrustLevel` structs
+| `lib/a2_ml.ex` | Public API | Re-exports parser and renderer functions
+| `test/a2ml_test.exs` | Parser tests | Round-trip tests, edge cases, error handling
+| `mix.exs` | Build configuration | Elixir version, Hex metadata, dependencies
+|===
+
+== Questions?
+
+Open an issue or reach out directly — happy to explain anything in more detail.
