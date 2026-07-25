@@ -1,0 +1,202 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+= a2ml-haskell — Show Me The Receipts
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+:toc:
+:icons: font
+
+The README makes claims. This file backs them up.
+
+== A2ML Parser and Renderer for Haskell
+
+[quote, a2ml-haskell.cabal]
+____
+A Haskell library for parsing and rendering A2ML (Attested Markup Language)
+documents. A2ML is an attestation-native markup format designed for documents
+that carry trust metadata, cryptographic attestations, and provenance
+information.
+____
+
+`Data.A2ML.Parser` (`src/Data/A2ML/Parser.hs`) implements a line-oriented,
+purely functional parser over `Text`. The top-level function `parseA2ML ::
+Text -> Either ParseError Document` returns a typed sum on failure rather than
+crashing. Internally, `parseLines` → `parseBlocks` recurse over the line list,
+pattern-matching on headings (`# ... #####`), directive blocks
+(`@name: ... @end`), bullet items (`- ` or `* `), and plain paragraph lines.
+Inline formatting (`**bold**`, `*italic*`) is handled by `parseInlines` and
+its helper `parseInlinesItalic` using `Data.Text.breakOn` — no regex, no
+mutable state.
+
+The Haskell variant models directives as multi-line blocks (`@name: ... @end`),
+which is a richer surface syntax than the single-line `@name value` used in
+`a2ml-rs`. Both parsers share the same output semantics for `Document` and
+`Attestation`, but diverge on directives: `Data.A2ML.Types` uses a
+`DirectiveName` sum type with known constructors (`DirAbstract`, `DirRefs`,
+`DirAttestation`, `DirMeta`, `DirCustom Text`) rather than a free-form string pair.
+
+**Caveat:** The inline parser handles `**bold**` and `*italic*` via
+left-to-right `breakOn`; nested or interleaved emphasis (e.g.
+`*a **b** c*`) is not yet handled correctly. Link `[text](url)` and
+`@ref(id)` patterns are declared in the module signature but the parser
+implementation falls through to `PlainText` for those cases — the
+infrastructure is present, the pattern matching is incomplete. The fuzz
+corpus (`tests/fuzz/`) is a placeholder only.
+
+- Parser entry: `src/Data/A2ML/Parser.hs:49` (`parseA2ML :: Text -> Either ParseError Document`)
+- Type definitions: `src/Data/A2ML/Types.hs` (Document, Block, Inline, DirectiveName, Attestation, TrustLevel, Manifest, Reference)
+- Renderer: `src/Data/A2ML/Renderer.hs`
+- Top-level re-export: `src/Data/A2ML.hs`
+- Learn more: https://hackage.haskell.org/package/a2ml (forthcoming), https://github.com/hyperpolymath/a2ml
+
+== Cryptographic Attestation Model
+
+[quote, src/Data/A2ML/Types.hs]
+____
+A cryptographic attestation attached to content.
+attestationSigner :: Text
+attestationAlgorithm :: Text
+attestationSignature :: Text
+attestationTimestamp  :: Maybe Text
+____
+
+The Haskell `Attestation` type goes further than the Rust binding: it records
+`attestationAlgorithm` (e.g. `"ed25519"`, `"sha256"`) and
+`attestationSignature` (hex or base64). The `TrustLevel` enum runs from
+`Unsigned` through `SelfAttested`, `ThirdPartyAttested`, to `MultiAttested`,
+encoding the number and independence of attestors rather than the Rust
+variant's subjective `Reviewed`/`Verified` distinction. `Manifest` aggregates
+title, author, version, SPDX license, overall `TrustLevel`, and the full
+attestation list — making it the canonical entry point for programmatic
+provenance inspection.
+
+**Caveat:** Signature _verification_ (actual crypto) is not implemented in
+this library. `attestationSignature` is stored as an opaque `Text` field.
+An external verifier (e.g. the `cookie-rebound` Zig FFI layer or a GnuPG
+wrapper) must perform the actual ed25519 or SHA-256 check. The
+`MultiAttested` level is declared but no quorum logic is implemented yet.
+
+- Attestation type: `src/Data/A2ML/Types.hs:96–117`
+- Trust level enum: `src/Data/A2ML/Types.hs:108–117` (Unsigned → MultiAttested)
+- Manifest type: `src/Data/A2ML/Types.hs:119–133`
+
+== Test Suite: Unit, End-to-End, and Property-Based Tests
+
+[quote, a2ml-haskell.cabal]
+____
+test-suite a2ml-tests
+  other-modules: UnitSpec E2ESpec PropertySpec
+  build-depends: hspec, QuickCheck, hspec-quickcheck
+____
+
+The test suite has three modules. `UnitSpec` tests individual parser functions
+in isolation (heading level detection, directive name parsing, bullet list
+accumulation). `E2ESpec` tests the full `parseA2ML` → `renderA2ML` round-trip
+on representative `.a2ml` documents. `PropertySpec` uses QuickCheck to assert
+`parseA2ML (renderA2ML doc) == Right doc` for arbitrary `Document` values —
+that the renderer and parser are mutual inverses. The `Spec.hs` entry point
+aggregates all three via `hspec`.
+
+**Caveat:** QuickCheck generators for `Document` do not yet exercise the full
+surface syntax — generated documents use only headings and paragraphs, not
+directives or attestations. Property coverage will expand as the inline parser
+matures.
+
+- Unit tests: `tests/UnitSpec.hs`
+- End-to-end tests: `tests/E2ESpec.hs`
+- Property tests: `tests/PropertySpec.hs`
+- Test runner: `tests/Spec.hs`
+- Benchmark: `bench/Main.hs` (Criterion for parse and render hot paths)
+- Run: `cabal test` or `just test`
+
+== MPL-2.0 Fallback for Hackage
+
+[quote, a2ml-haskell.cabal]
+____
+license: MPL-2.0
+-- (MPL-2.0 preferred; MPL-2.0 required for Hackage OSI-approved policy)
+____
+
+Hackage requires an OSI-approved license; MPL-2.0 is not yet on the
+OSI list. The fallback policy (identical to `a2ml-rs`) applies: every `.hs`
+source file carries the dual SPDX comment. The `LICENSE-MPL-2.0` file is
+present alongside `LICENSE` (MPL-2.0).
+
+**Caveat:** Unlike crates.io, Hackage does not enforce the SPDX identifier at
+upload time by machine. The comment in each source file is the enforceable
+record of the dual-license intent.
+
+- License files: `LICENSE` (MPL-2.0), `LICENSE-MPL-2.0`
+- Learn more: https://github.com/hyperpolymath/palimpsest-license
+
+== Zig FFI Layer (Scaffold Present, Implementation Pending)
+
+[quote, src/interface/ffi/README.adoc]
+____
+Zig FFI scaffold for exposing Data.A2ML as a C-ABI library.
+____
+
+The `src/interface/ffi/` directory follows the standard Idris2-ABI / Zig-FFI
+architecture required by all RSR projects with cross-language interfaces. The
+`build.zig` and `main.zig` scaffold is present; the Idris2 ABI definitions in
+`src/interface/abi/` are placeholders. This layer is intended to expose
+`parseA2ML` as a C-callable function for embedding the Haskell parser in
+non-Haskell hosts via GHC's Foreign Function Interface.
+
+**Caveat:** The Zig FFI is not yet wired to any real Haskell FFI export. No
+`.hs` module currently declares `foreign export ccall` bindings. This is
+scaffolding for a future integration milestone.
+
+- FFI scaffold: `src/interface/ffi/src/main.zig`, `src/interface/ffi/build.zig`
+- ABI placeholder: `src/interface/abi/` (Idris2 definitions pending)
+- Integration test scaffold: `src/interface/ffi/test/integration_test.zig`
+
+== Dogfooded Across The Account
+
+[cols="1,2"]
+|===
+| Technology | Also Used In
+
+| **A2ML format** | https://github.com/hyperpolymath/a2ml-rs[a2ml-rs] (Rust binding), https://github.com/hyperpolymath/pandoc-a2ml[pandoc-a2ml] (Lua Pandoc reader), https://github.com/hyperpolymath/tree-sitter-a2ml[tree-sitter-a2ml] (grammar)
+
+| **Haskell / GHC + cabal** | https://github.com/hyperpolymath/nextgen-languages[nextgen-languages] (Scaffoldia CLI, AffineScript compiler), https://github.com/hyperpolymath/hypatia[hypatia] (rule modules)
+
+| **hspec + QuickCheck** | Other Haskell projects in the `nextgen-languages` monorepo
+
+| **SPDX MPL-2.0 fallback** | https://github.com/hyperpolymath/a2ml-rs[a2ml-rs] (crates.io policy)
+|===
+
+== File Map
+
+[cols="1,2"]
+|===
+| Path | Proves
+
+| `src/Data/A2ML.hs` | Top-level re-export module — public API surface for library consumers
+
+| `src/Data/A2ML/Types.hs` | AST: `Document`, `Block`, `Inline`, `DirectiveName` (sum with known values), `Attestation` (with algorithm + signature fields), `TrustLevel` (Unsigned→MultiAttested), `Manifest`, `Reference`
+
+| `src/Data/A2ML/Parser.hs` | Line-oriented parser: `parseA2ML`, `parseA2MLFile`, `ParseError` sum type, `parseBlocks`, `parseInlines`, directive body collector (`collectDirectiveBody`), bullet item accumulator (`collectBulletItems`)
+
+| `src/Data/A2ML/Renderer.hs` | Canonical serialiser: `renderA2ML :: Document -> Text` — intended round-trip inverse of the parser
+
+| `tests/UnitSpec.hs` | Isolated unit tests for parser primitives
+
+| `tests/E2ESpec.hs` | End-to-end parse→render→re-parse round-trip tests
+
+| `tests/PropertySpec.hs` | QuickCheck property: `parse ∘ render = id` for generated documents
+
+| `tests/Spec.hs` | hspec aggregator entry point
+
+| `bench/Main.hs` | Criterion benchmarks for parse and render hot paths
+
+| `a2ml-haskell.cabal` | Package metadata: exposed modules, build deps (base, text, containers, bytestring), GHC warning flags, test suite and benchmark stanza definitions
+
+| `src/interface/abi/` | Idris2 ABI definitions (placeholder — formal proof artefacts pending)
+
+| `src/interface/ffi/src/main.zig` | Zig FFI scaffold for C-ABI exposure of the Haskell parser
+
+| `src/interface/ffi/test/integration_test.zig` | FFI integration test scaffold
+
+| `0-AI-MANIFEST.a2ml` | AI session gatekeeper — read first before modifying any file
+
+| `.machine_readable/` | A2ML state files: STATE.a2ml, ECOSYSTEM.a2ml, META.a2ml
+|===

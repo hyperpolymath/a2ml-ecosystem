@@ -1,0 +1,91 @@
+# SPDX-License-Identifier: MPL-2.0
+# idrisiser manifest for a2ml-rs
+#
+# Generates Idris2 dependent-type wrappers for the A2ML parser and renderer.
+# A2ML (Attested Markup Language) is safety-critical: it validates AI agent
+# manifests and carries attestation provenance.  These wrappers prove that:
+#   - Parsing is total (never panics on any input)
+#   - The round-trip invariant holds: render(parse(x)) normalises correctly
+#   - Validated attestation output satisfies schema invariants
+#   - TrustLevel ordering is monotone (Unverified < Automated < Reviewed < Verified)
+
+[project]
+name = "a2ml-rs"
+module-prefix = "A2ml.Verified"
+
+# ---------------------------------------------------------------------------
+# Interface 1 — core document parser (src/parser.rs)
+# ---------------------------------------------------------------------------
+[[interfaces]]
+name = "document-parser"
+source = "idrisiser/parser.tsig"
+format = "type-sig"
+verify = ["parse", "parse_file", "parse_inlines"]
+preconditions = [
+  "Input string is valid UTF-8",
+  "Fenced code blocks are terminated before end-of-input",
+  "Every @directive line has a non-empty name after the @ sigil",
+  "Every !attest block supplies identity, role, and trust fields",
+]
+postconditions = [
+  "Ok(doc) implies doc.blocks is a well-formed sequence with no internal inconsistency",
+  "Ok(doc) with any !attest block implies doc.attestations is non-empty",
+  "Err(_) is returned for every malformed input (no silent data loss)",
+  "parse returns Ok for the empty string without panicking",
+]
+invariants = [
+  "parse is total: it never panics on any &str input",
+  "parse_file delegates to parse after IO, inheriting its totality",
+  "Heading level is always in the range 1..=6",
+  "Directive name is always non-empty in the Ok case",
+  "Attestation trust_level is always a valid TrustLevel variant in the Ok case",
+]
+
+# ---------------------------------------------------------------------------
+# Interface 2 — type system (Document, Attestation, TrustLevel)
+# ---------------------------------------------------------------------------
+[[interfaces]]
+name = "document-types"
+source = "idrisiser/types.tsig"
+format = "type-sig"
+verify = ["TrustLevel.from_str", "TrustLevel.as_str", "Manifest.from_document"]
+preconditions = [
+  "TrustLevel.from_str input is a non-empty string",
+  "Manifest.from_document receives a well-formed Document",
+]
+postconditions = [
+  "TrustLevel.from_str returns Some(_) iff input is one of: unverified, automated, reviewed, verified (case-insensitive)",
+  "TrustLevel.as_str(TrustLevel.from_str(s).unwrap()) == s.to_lowercase() — round-trip",
+  "Manifest.from_document(doc).version == doc.directives version field if present",
+]
+invariants = [
+  "TrustLevel ordering is total and monotone: Unverified < Automated < Reviewed < Verified",
+  "from_str and as_str form a partial bijection (round-trip for valid strings)",
+  "Manifest always carries a non-empty directives list when the source doc has directives",
+]
+
+# ---------------------------------------------------------------------------
+# Interface 3 — round-trip renderer (src/renderer.rs)
+# ---------------------------------------------------------------------------
+[[interfaces]]
+name = "round-trip"
+source = "idrisiser/round-trip.tsig"
+format = "type-sig"
+verify = ["render"]
+preconditions = [
+  "render receives a Document produced by a successful parse call",
+]
+postconditions = [
+  "render returns Ok(_) for any Document produced by parse",
+  "parse(render(doc).unwrap()) produces a semantically equivalent Document",
+]
+invariants = [
+  "render is total on well-formed Documents (no panic path)",
+  "render(parse(input).unwrap()) is idempotent up to whitespace normalisation",
+]
+
+[proofs]
+require-totality = true
+round-trip-proofs = true
+qtt-tracking = false
+search-depth = 100

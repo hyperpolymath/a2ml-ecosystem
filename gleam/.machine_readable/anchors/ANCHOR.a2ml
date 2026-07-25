@@ -1,0 +1,18 @@
+# ⚓ ANCHOR: a2ml_gleam
+# This is the canonical authority for the a2ml_gleam repository.
+
+id: "org.hyperpolymath.a2ml_gleam"
+version: "1.0.0"
+clade: "unknown"
+status: "active"
+
+# SSG Configuration (Unified boj-server build)
+ssg:
+  engine: "casket"
+  output_dir: "public"
+  boj_trigger: true
+  cartridge: "ssg-mcp"
+
+# Relationships
+parents:
+  - "org.hyperpolymath.boj-server"

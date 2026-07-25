@@ -1,0 +1,219 @@
+<!--
+SPDX-License-Identifier: CC-BY-SA-4.0
+SPDX-FileCopyrightText: 2025-2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
+
+[![OpenSSF Best Practices](https://img.shields.io/badge/OpenSSF-Best_Practices-green?logo=opensourcesecurity)](https://www.bestpractices.dev/en/projects/new?repo_url=https://github.com/hyperpolymath/a2ml_ex)
+
+# Overview
+
+**Elixir implementation of A2ML (Attested Markup Language) parser and
+renderer.**
+
+A2ML is a structured markup language with built-in attestation
+provenance, directive metadata, and trust-level tracking. This library
+provides a complete parser and renderer for A2ML documents in pure
+Elixir.
+
+# Features
+
+- Parse A2ML documents from strings or files
+
+- Render AST back to A2ML surface syntax (round-trip support)
+
+- Typed AST with structs for blocks, inlines, directives, and
+  attestations
+
+- Trust-level hierarchy: `:unverified`, `:automated`, `:reviewed`,
+  `:verified`
+
+- Directive blocks with key-value attributes
+
+- Attestation provenance chain
+
+- Zero dependencies beyond Elixir standard library
+
+# Quick Start
+
+Add to your `mix.exs`:
+
+```elixir
+defp deps do
+  [{:a2ml_ex, git: "https://github.com/hyperpolymath/a2ml_ex.git"}]
+end
+```
+
+Then run:
+
+```bash
+mix deps.get
+mix compile
+```
+
+# Usage
+
+```elixir
+# Parse A2ML document
+{:ok, document} = A2ML.parse("# Hello World\n\nSome **bold** text.")
+
+# Render back to A2ML
+{:ok, rendered} = A2ML.render(document)
+
+# Handle parse errors
+{:error, %A2ML.ParseError{}} = A2ML.parse("invalid syntax")
+```
+
+# Module Structure
+
+| Module | Purpose |
+|----|----|
+| `A2ML` | Main module - re-exports public API |
+| `A2ML.Document` | Document struct and functions |
+| `A2ML.Block` | Block-level elements (headings, paragraphs, lists, etc.) |
+| `A2ML.Inline` | Inline elements (bold, italic, code, links, etc.) |
+| `A2ML.Directive` | Directive blocks with attributes |
+| `A2ML.Attestation` | Attestation provenance and trust levels |
+| `A2ML.Parser` | Parser implementation (string to AST) |
+| `A2ML.Renderer` | Renderer implementation (AST to string) |
+| `A2ML.Error` | Error types and handling |
+
+# A2ML Syntax Reference
+
+    # Heading
+
+    Paragraph with **bold**, *italic*, `code`, [link](url), and @ref(id).
+
+    @directive-name(key=val): single line value
+
+    @multi-line:
+    Content spanning
+    multiple lines
+    @end
+
+    !attest
+    identity: Jonathan D.A. Jewell
+    role: author
+    trust-level: verified
+    timestamp: 2026-03-16T00:00:00Z
+    !end
+
+    - Bullet list item
+    - Another item
+
+    > Block quote text
+
+    ```elixir
+    defmodule Example do
+      def hello, do: "world"
+    end
+    ```
+
+# Development
+
+```bash
+mix deps.get       # Install dependencies
+mix compile         # Compile project
+mix test            # Run tests
+mix format          # Format code
+mix creds check     # Check credentials
+```
+
+# Configuration
+
+Add to `config/config.exs`:
+
+```elixir
+config :a2ml_ex,
+  default_trust_level: :reviewed,
+  strict_mode: true
+```
+
+# Related Libraries
+
+- [a2ml-deno](https://github.com/hyperpolymath/a2ml-deno) —
+  Deno/ReScript implementation
+
+- [a2ml-rs](https://github.com/hyperpolymath/a2ml-rs) — Rust
+  implementation
+
+- [a2ml-haskell](https://github.com/hyperpolymath/a2ml-haskell) —
+  Haskell implementation
+
+- [a2ml_gleam](https://github.com/hyperpolymath/a2ml_gleam) — Gleam
+  implementation
+
+- [tree-sitter-a2ml](https://github.com/hyperpolymath/tree-sitter-a2ml)
+  — Tree-sitter grammar
+
+- [vscode-a2ml](https://github.com/hyperpolymath/vscode-a2ml) — VS Code
+  extension
+
+# Trust Levels
+
+A2ML supports four trust levels in a hierarchy:
+
+| Level         | Meaning                                                  |
+|---------------|----------------------------------------------------------|
+| `:unverified` | Content has not been reviewed or attested                |
+| `:automated`  | Content generated or verified by automated systems       |
+| `:reviewed`   | Content reviewed by human but not formally verified      |
+| `:verified`   | Content formally verified with cryptographic attestation |
+
+# Directives
+
+Directives provide metadata and processing instructions:
+
+    @page-break
+
+    @toc(depth=3): Table of Contents
+
+    @include(file="chapter1.a2ml"): 
+
+    @template(name="article"):
+    # {title}
+    By {author}
+
+    {content}
+    @end
+
+# Attestations
+
+Attestations provide cryptographic provenance:
+
+    !attest
+    identity: Alice Smith
+    role: Editor
+    trust-level: verified
+    timestamp: 2026-03-16T12:00:00Z
+    signature: 0xabc123...
+    !end
+
+# Performance
+
+The Elixir implementation is optimized for:
+
+- Fast parsing of large documents
+
+- Memory-efficient AST representation
+
+- Concurrent rendering capabilities
+
+- Stream processing support
+
+# License
+
+SPDX-License-Identifier: CC-BY-SA-4.0
+
+Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath)
+
+See [LICENSE](LICENSE) for full license text.
+
+# Contributing
+
+See <a href="CONTRIBUTING.adoc" class="adoc">CONTRIBUTING</a> for
+contribution guidelines.
+
+# Roadmap
+
+See <a href="ROADMAP.adoc" class="adoc">ROADMAP</a> for planned features
+and enhancements.

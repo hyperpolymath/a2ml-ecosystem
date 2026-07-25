@@ -1,0 +1,5 @@
+-- SPDX-License-Identifier: MPL-2.0
+-- Type signatures for the a2ml-rs renderer round-trip (src/renderer.rs)
+-- Format: name : Type (idrisiser type-sig format)
+
+render : Document -> Result String A2mlError

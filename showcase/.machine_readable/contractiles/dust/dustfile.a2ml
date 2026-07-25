@@ -1,0 +1,15 @@
+// dustfile.a2ml for a2ml-showcase
+// SPDX-License-Identifier: MPL-2.0
+// Generated: 2026-04-08T20:03:43+01:00
+
+dustfile {
+    name: "a2ml-showcase"
+    version: "1.0.0"
+    description: "dustfile contractile for a2ml-showcase"
+    
+    // Basic dustfile configuration
+    enabled: true
+    
+    // Repository-specific dust settings will be added here
+    // This preserves the existing contractile structure and naming convention
+}

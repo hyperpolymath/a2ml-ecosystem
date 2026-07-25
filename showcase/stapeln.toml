@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: MPL-2.0
+
+[project]
+name = "a2ml-showcase"
+description = "A2ML showcase and examples"
+
+[container]
+base = "cgr.dev/chainguard/wolfi-base:latest"

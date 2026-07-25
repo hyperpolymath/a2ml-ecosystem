@@ -1,0 +1,2 @@
+cicd_rules/banned_language_file:a2ml-haskell.cabal
+cicd_rules/banned_language_file:Setup.hs

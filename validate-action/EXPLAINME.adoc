@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+= a2ml-validate-action — Show Me The Receipts
+:toc:
+:icons: font
+
+The README makes claims. This file backs them up.
+
+[quote, README]
+____
+AI agent instructions, and project state. This action scans for `.a2ml` files
+____
+
+== File Map
+
+[cols="1,2"]
+|===
+| Path | What's There
+
+| `src/` | Source code
+| `test(s)/` | Test suite
+|===
+
+== Questions?
+
+Open an issue or reach out directly — happy to explain anything in more detail.

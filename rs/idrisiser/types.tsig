@@ -1,0 +1,7 @@
+-- SPDX-License-Identifier: MPL-2.0
+-- Type signatures for the a2ml-rs types (src/types.rs)
+-- Format: name : Type (idrisiser type-sig format)
+
+TrustLevel.from_str : String -> Option TrustLevel
+TrustLevel.as_str : TrustLevel -> String
+Manifest.from_document : Document -> Manifest

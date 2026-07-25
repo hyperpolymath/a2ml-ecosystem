@@ -1,0 +1,205 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= a2ml-showcase — Show Me The Receipts
+:toc:
+:toclevels: 3
+:icons: font
+
+The README describes a2ml-showcase as a content-only repository of examples and
+templates for the A2ML (Attested Markup Language) format. This file traces the
+content structure, identifies the critical documentation paths, and records how
+the showcase fits into the wider A2ML ecosystem.
+
+== Claims from the README
+
+[quote, README]
+____
+This repository contains example A2ML documents, templates, and rendered output
+demonstrating the capabilities of the A2ML format. It is a content/showcase
+repository — there is no executable code.
+____
+
+*How it works.* A2ML is a structured identity and attestation format for
+software agents. An `.a2ml` file combines human-readable markup (headings,
+paragraphs, lists) with machine-verifiable directive blocks delimited by
+`@<directive>:` ... `@end`. The mandatory directives are `@abstract:` (a
+human-readable description) and `@attestation:` (a structured block carrying
+`agent-id`, `attested-by`, `trust-level`, `capabilities`, and `scope`).
+
+The `content/` directory holds five Markdown documentation pages rendered to
+HTML via `template.html`:
+
+* `index.md` — format overview, feature grid (attestation chains, provenance
+  tracking, agent identity, CI/CD native), and the "why A2ML" narrative.
+* `getting-started.md` — minimal manifest walkthrough.
+* `examples.md` — three worked examples: minimal self-declared bot, CI/CD
+  agent with verified attestation, and a multi-agent orchestration manifest.
+* `integrations.md` — tooling ecosystem coverage.
+* `specification.md` — format reference (directives, trust levels, grammar).
+
+The `examples.md` content demonstrates that even the simplest valid A2ML file
+(a greeter bot with a `@attestation:` block declaring `trust-level:
+self-declared`) is enough for tooling to identify the agent and record its
+claims. The CI/CD agent example shows a verified attestation where a security
+team countersigns the capabilities block, lifting `trust-level` from
+`self-declared` to `verified`.
+
+*Honest caveat.* a2ml-showcase is documentation, not a parser. The `.a2ml`
+snippets in `content/examples.md` are illustrative; their correctness against
+the A2ML grammar is not enforced by a running parser in this repo. The
+grammar and parser live in `tree-sitter-a2ml`; the normative specification
+lives in `standards`.
+
+*Critical path.* `content/index.md` → explains attestation chain model →
+`content/examples.md` → minimal, CI/CD, and multi-agent worked examples →
+`output/examples.html` (rendered via `template.html`) → read by tooling
+authors and agent developers.
+
+[quote, README]
+____
+A2ML is not a paper specification. It ships with real, working tools: Pandoc
+reader, writer, filter, and template via pandoc-a2ml; VS Code syntax
+highlighting via vscode-a2ml; Tree-sitter grammar via tree-sitter-a2ml;
+GitHub Linguist language detection (submission pending).
+____
+
+*How it works.* `content/integrations.md` is the canonical cross-reference for
+this claim. It links: pandoc-a2ml (convert A2ML to HTML, PDF, Markdown, 40+
+formats); vscode-a2ml (syntax highlighting in VS Code); tree-sitter-a2ml
+(Neovim, Helix, Zed, GitHub); and format-registrations (IANA media type
+`application/vnd.a2ml`, freedesktop.org MIME XML, Wikidata entity). The
+showcase also references that `0-AI-MANIFEST.a2ml` files are recognised by
+glob patterns `0-AI-MANIFEST.a2ml` and `AI.a2ml` at weight 60 in the
+shared-mime-info XML — giving file managers and editors first-class detection.
+
+*Honest caveat.* The GitHub Linguist submission is described as "pending". The
+VS Code extension is published but not yet widely known. Pandoc integration is
+the most mature path.
+
+*Critical path.* `content/integrations.md` → links to pandoc-a2ml →
+`pandoc --from a2ml --to html` converts A2ML to HTML → output is
+indistinguishable from hand-written HTML but with attestation metadata
+preserved in `<meta>` tags.
+
+== How It Is Checked
+
+[source,bash]
+----
+deno test --allow-read tests/
+----
+
+The test suite in `tests/validate.test.ts` checks:
+
+* All five `content/*.md` files exist.
+* `output/` directory exists and contains rendered artefacts.
+* `template.html` is present and non-empty.
+* `tests/fuzz/` contains a fuzz corpus (directory exists check).
+* Spot-checks that `content/index.md` contains the A2ML identifier and at
+  least one `@attestation` reference.
+
+`tests/fuzz/` holds a fuzz corpus for property-based testing against unusual
+document structures.
+
+== Dogfooded Across The Account
+
+[cols="2,3", options="header"]
+|===
+| Consumer | How it uses this repo
+
+| `standards` (A2ML spec)
+| The normative A2ML specification in `standards/a2ml/SPEC-v1.0.adoc` links
+  to a2ml-showcase for worked examples, keeping the spec document itself formal
+  and compact.
+
+| `format-registrations`
+| `iana/a2ml-media-type.txt` cites a2ml-showcase as the "Applications that use
+  this media type" reference. The `shared-mime-info/a2ml.xml` globs
+  (`*.a2ml`, `0-AI-MANIFEST.a2ml`, `AI.a2ml`) are documented here.
+
+| `tree-sitter-a2ml`
+| Uses the directive examples from `content/examples.md` as parser test
+  fixtures. The `@attestation:`, `@abstract:`, and `@opaque:` directives
+  shown in the showcase must parse correctly in the tree-sitter grammar.
+
+| `gitbot-fleet` (rhodibot)
+| rhodibot's own `0-AI-MANIFEST.a2ml` follows the CI/CD agent pattern
+  documented in `content/examples.md`.
+
+| Every hyperpolymath repo
+| All repos carry a `0-AI-MANIFEST.a2ml` in their root; a2ml-showcase's
+  getting-started guide is the canonical reference for authors writing new
+  manifests.
+
+| `hypatia-scan.yml`
+| Hypatia's A2ML manifest validation rule checks that `0-AI-MANIFEST.a2ml`
+  files match the minimal structure demonstrated in this showcase.
+|===
+
+== File Map
+
+[cols="2,3", options="header"]
+|===
+| Path | What's There
+
+| `content/index.md`
+| A2ML format overview. Covers: attestation chains, provenance tracking, agent
+  identity, CI/CD native design. The feature grid and "Why A2ML?" narrative.
+
+| `content/getting-started.md`
+| Minimal manifest walkthrough. Shows the simplest valid `.a2ml` file with
+  `@abstract:` and `@attestation:` blocks and explains each field.
+
+| `content/examples.md`
+| Three worked examples: (1) minimal self-declared greeter bot; (2) CI/CD
+  agent with security-team countersignature; (3) multi-agent orchestration
+  manifest with cross-agent `@refs:` links.
+
+| `content/integrations.md`
+| Tooling ecosystem: pandoc-a2ml, vscode-a2ml, tree-sitter-a2ml, format
+  registrations, GitHub Linguist. Status notes for each.
+
+| `content/specification.md`
+| Format reference: directive grammar, trust levels (`self-declared`,
+  `verified`, `audited`), required vs. optional fields.
+
+| `output/`
+| Rendered HTML pages (generated from `content/` via `template.html`).
+
+| `template.html`
+| HTML rendering template. Used by the build step to convert `content/*.md`
+  into the `output/` pages.
+
+| `README.adoc`
+| One-screen overview: what A2ML is, content structure, licence.
+
+| `tests/validate.test.ts`
+| Deno test suite. File existence, content structure, template presence,
+  and fuzz corpus checks.
+
+| `tests/fuzz/`
+| Fuzz corpus for property-based edge-case testing.
+
+| `Justfile`
+| `just` task runner: `default`, `doctor`, `tour`, `help-me`.
+
+| `deno.json` / `deno.lock`
+| Deno runtime config and lockfile.
+
+| `guix.scm` / `flake.nix`
+| Reproducible build environment declarations.
+
+| `stapeln.toml`
+| Stapeln container configuration for this repo.
+
+| `contractiles/`
+| Contractile recipe stubs (RSR standard).
+
+| `0-AI-MANIFEST.a2ml`
+| AI agent manifest for this repo — itself an example of the format it
+  documents.
+|===
+
+== Questions?
+
+Open an issue on GitHub or reach out to Jonathan D.A. Jewell
+<j.d.a.jewell@open.ac.uk> — happy to explain anything in more detail.

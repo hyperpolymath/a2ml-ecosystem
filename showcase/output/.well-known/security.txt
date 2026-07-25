@@ -1,0 +1,28 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+# Security contact for a2ml.net — RFC 9116
+# https://a2ml.net/.well-known/security.txt
+
+Contact: mailto:j.d.a.jewell@open.ac.uk
+Encryption: openpgp4fpr:4A03639C1EB1F86C7F0C97A91835A14A2867091E
+Expires: 2027-06-21T00:00:00Z
+Preferred-Languages: en
+Canonical: https://a2ml.net/.well-known/security.txt
+Policy: https://github.com/hyperpolymath/a2ml-showcase/blob/main/SECURITY.md
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEljlFF1RJblHWtTfK0RkBfr9pWrEFAmo5socACgkQ0RkBfr9p
+WrFknA//WPsYI55diuLoE2GVMu7t0MWoxr+ZkVB3tJK29gNDxo865pO1Yz2hy0vL
+/wSEDRed1WRFlaSGosjw07IVs2C58yw9X2tHnVa57U+gaObqHIEE+TM1nd7ynZXF
+sjKZcjP06wt3uIL28fOaNbNXuNeaq6Len+2dnfq/sgsWms+MPXbQmqXiGmID0srb
+26ES+NEQnL/FMaht7YoO67/m/o+33R36eItRO1bVnhTvjBrWXOErPK0g3tThIqyj
+t+0JTkh4P68I+dAdCthZWebtk4L17YRvI5EQgooCAvI5DWhIZhi4rrQ+iscPOLhk
+DIHaQnfAy2JKb9wu1bTx2zE/YeNGmSe8DgEDV2nVVdyBAVkvONg24MJeBEVtNfZV
+Q3UgNnoMooS34wXR9Du0/fcD8ZJ8stpXuhf1Ylco+xURMU25Ct70jfCrO593ZMJP
+JUJbKqmp+IGykhqTit0d6c7L3reTBETdhidLJKqAdiEYWqaX+rFluSV0wHAXK/Ge
+h39YZyCEFZSKOzslzwnAlDbURAVjsXFFN5hMvniLlKs5qypbp6JrB8pTkpHG5D/1
+h2qndLYTVb+A74UT+8fnCBtZwZUnUwAAcQKSTVt44igFrkiZ1qFgARppo/xboM+u
+Qc8Wv7c3mwfvFRK79kYoyeacno6gqHDh7aqJGnrLIzTca4txzsU=
+=9jaq
+-----END PGP SIGNATURE-----

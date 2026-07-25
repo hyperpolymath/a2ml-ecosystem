@@ -1,0 +1,71 @@
+#!/bin/bash
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+#
+# Pre-commit enforcer: licence/owner headers + architecture policies.
+# Canonical, version-controlled hook. Install with: bash hooks/install.sh
+# (sets core.hooksPath=hooks so this file is used directly).
+
+# 1. License Check
+# Determine if this is a SHARED (AGPL) or OWNED (MPL) repo
+REMOTE_URL=$(git remote get-url origin 2>/dev/null)
+DIR_NAME=$(basename "$(pwd)")
+
+if [[ "$REMOTE_URL" == *"JoshuaJewell"* || "$DIR_NAME" == boj-* || "$DIR_NAME" == bofj-* ]]; then
+    # Shared repos: components retain their original licences; verify root LICENSE is AGPL.
+    if ! grep -q "Affero General Public License" LICENSE 2>/dev/null; then
+        echo "ERROR: Shared repository must have AGPL-3.0-or-later LICENSE file."
+        exit 1
+    fi
+else
+    EXPECTED_OWNER="Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"
+
+    # Check staged files for SPDX header, split by file-type per LICENCE-POLICY Rule 1:
+    #   prose docs (.md/.adoc) -> CC-BY-SA-4.0 ; everything else (code/config) -> MPL-2.0.
+    # Owner-string is required on all (deliberate LLM-edit diagnostic).
+    STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(zig|ex|idr|eph|py|js|ts|rs|c|h|adoc|md)$')
+
+    for file in $STAGED_FILES; do
+        case "$file" in
+            *.md|*.adoc) FILE_LICENSE="CC-BY-SA-4.0" ;;
+            *)           FILE_LICENSE="MPL-2.0" ;;
+        esac
+        if ! grep -q "SPDX-License-Identifier: $FILE_LICENSE" "$file"; then
+            echo "ERROR: File $file is missing correct SPDX-License-Identifier: $FILE_LICENSE"
+            exit 1
+        fi
+        if ! grep -q "$EXPECTED_OWNER" "$file"; then
+            echo "ERROR: File $file is missing correct Owner: $EXPECTED_OWNER"
+            exit 1
+        fi
+    done
+fi
+
+# 2. No C Policy — all APIs/FFIs must be Zig (exceptions: proven, boj-server-cartridges)
+if [[ "$DIR_NAME" != "proven" && "$DIR_NAME" != "boj-server-cartridges" ]]; then
+    STAGED_C_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.c$')
+    if [ -n "$STAGED_C_FILES" ]; then
+        echo "ERROR: Strict No C Policy. C files are not allowed in this repository."
+        echo "Offending files: $STAGED_C_FILES"
+        exit 1
+    fi
+fi
+
+# 3. SNIFs Policy — never raw NIFs; always Safe NIFs
+STAGED_BEAM_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ex|exs|erl)$')
+for file in $STAGED_BEAM_FILES; do
+    if grep -qE "erlang:load_nif|:erlang\.load_nif" "$file"; then
+        echo "ERROR: Raw NIFs are forbidden. Use SNIFs (Safe NIFs) from the snifs repository."
+        exit 1
+    fi
+done
+
+# 4. Idris 2 ABI Policy — ABIs/capability matchers should be Idris 2 (Zig allowed for the FFI bridge)
+STAGED_ABI_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -i "abi")
+for file in $STAGED_ABI_FILES; do
+    if [[ "$file" != *.idr && "$file" != *.zig && "$file" != *.adoc && "$file" != *.md ]]; then
+        echo "WARNING: ABI definition found in non-Idris/Zig file: $file"
+    fi
+done
+
+exit 0

@@ -1,0 +1,19 @@
+-- SPDX-License-Identifier: MPL-2.0
+-- a2ml-showcase Idris2 test suite. Ported from tests/validate.test.ts
+-- (Deno) in May 2026 per the panic-free estate rollout. Harness is
+-- the cladistic Test.Spec from
+-- panic-free-tests-and-benches/clade-registry/clade-A/idris2/.
+
+package a2ml-showcase-tests
+
+sourcedir = "tests/idris2"
+
+depends = base
+
+modules = Test.Spec
+        , ValidateTest
+        , Main
+
+main = Main
+
+executable = "a2ml-showcase-tests"

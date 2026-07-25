@@ -1,0 +1,37 @@
+; SPDX-License-Identifier: MPL-2.0
+; Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+
+(state
+  (metadata
+    (version "1.0")
+    (updated "2026-04-04")
+    (crg-grade "C"))
+
+  (project-context
+    (name "a2ml-showcase")
+    (type "showcase-documentation")
+    (purpose "Demonstrate A2ML format capabilities with real-world examples")
+    (status "stable"))
+
+  (current-position
+    (completion-percentage 95)
+    (recent-achievement "Implemented CRG Grade C test suite")
+    (test-status "all-passing"))
+
+  (route-to-mvp
+    (phases
+      (("Phase 1" "Documentation & examples" "COMPLETE"))
+      (("Phase 2" "A2ML validation" "COMPLETE"))
+      (("Phase 3" "Test coverage to Grade C" "COMPLETE"))))
+
+  (blockers-and-issues
+    (active-blockers ())
+    (resolved-issues
+      ("Test coverage added" "2026-04-04")))
+
+  (critical-next-actions
+    (next "Maintain example accuracy as A2ML evolves")
+    (next "Monitor for new attestation patterns to document"))
+
+  (session-history
+    (("2026-04-04" "Added CRG C test suite (18 tests, all passing)"))))

@@ -1,0 +1,66 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+= a2ml_gleam — Show Me The Receipts
+:toc:
+:icons: font
+
+The README makes claims. This file backs them up.
+
+== Claims Substantiation
+
+=== Claim 1: "Full A2ML parser with error reporting, manifest extraction, and roundtrip fidelity (parse then render preserves structure)"
+
+**How it works:** The Gleam parser (`src/a2ml/parser.gleam`) implements recursive descent parsing over A2ML syntax: headings, paragraphs, directives, attestation blocks, trust levels. Each parse rule returns `Result(Parsed, ParseError)`, enabling error accumulation and recovery (e.g., malformed directive doesn't crash, returns error with position). The renderer (`src/a2ml/renderer.gleam`) walks the AST and emits A2ML text. Roundtrip testing (parse text T, render AST, compare output) validates that structure is preserved. Manifest extraction (`src/a2ml/manifest.gleam`) queries the AST for specific directive blocks (e.g., all `@version` directives) without reparsing.
+
+**Caveat:** Error recovery is best-effort. Deep nesting or circular references may cause panics. Trust-level validation is structural only (checks enum values); cryptographic verification is external. Manifest extraction is key-based lookup, not full XPath-like queries.
+
+**Evidence:** `src/a2ml/parser.gleam` implements `parse(text: String) -> Result(Document, ParseError)` with error position tracking. `src/a2ml/renderer.gleam` implements `render(doc: Document) -> String`. Tests in `test/` verify round-trip on realistic A2ML documents.
+
+=== Claim 2: "Pure Gleam library targeting Hex.pm ecosystem (BEAM and JavaScript compilation)"
+
+**How it works:** Gleam code compiles to either Erlang bytecode (running on BEAM) or JavaScript (targeting Node.js, Deno, browsers via JavaScript backend). The library has no platform-specific code—it uses only Gleam stdlib (which abstracts over BEAM/JS differences). When published to Hex.pm, the Gleam compiler automatically detects both backends and builds for both. Users can import `a2ml_gleam` in their BEAM-based Elixir/Erlang projects OR in JavaScript-based Gleam projects—same library, two runtimes.
+
+**Caveat:** BEAM and JavaScript have different performance characteristics. The BEAM version may be faster for parsing large documents (concurrent processes), while JavaScript is lighter for simple applications. Some stdlib functions have slightly different semantics across platforms (error types, garbage collection). The library must avoid platform-specific idioms to maintain parity.
+
+**Evidence:** `gleam.toml` specifies Gleam version and Hex.pm metadata. No `#[cfg]` or platform conditionals in code. CI tests both `gleam build` (BEAM) and `gleam build --target javascript`. Hex.pm publishes both built artifacts.
+
+== Technology Choices
+
+[cols="1,2"]
+|===
+| Technology | Learn More
+
+| **Gleam** | Functional language compiling to Erlang/JavaScript
+| **BEAM** | Erlang VM (concurrency, fault tolerance)
+| **Hex.pm** | Erlang/Elixir package registry
+|===
+
+== File Map
+
+[cols="1,3"]
+|===
+| Path | Purpose
+
+| `src/a2ml/` | Core modules
+| `src/a2ml/types.gleam` | Type definitions: Document, Block, Inline, Directive, Attestation, TrustLevel
+| `src/a2ml/parser.gleam` | Recursive descent parser: text → Result(Document, ParseError)
+| `src/a2ml/renderer.gleam` | AST → text: walk tree, emit A2ML syntax
+| `src/a2ml/manifest.gleam` | Manifest extraction: query AST for specific directives
+| `src/a2ml.gleam` | Main module: re-exports public API
+| `test/` | Test suite
+| `test/parser_test.gleam` | Parser unit tests: all syntax forms, error cases
+| `test/renderer_test.gleam` | Renderer tests: round-trip fidelity
+| `test/manifest_test.gleam` | Manifest extraction tests
+| `gleam.toml` | Package manifest: name, version, dependencies, exports
+| `README.md` | User documentation with examples
+|===
+
+== Dogfooted Across The Account
+
+| Project | Integration |
+| **panic-attacker** | Can parse Elixir projects' A2ML manifests via BEAM backend
+| **ephapax** | Attestation blocks in A2ML can be linearly typed in Ephapax
+| **burble** | Audio metadata could be annotated with A2ML trust levels
+
+== Readiness
+
+**CRG Grade:** C (Beta) - Parser and renderer working across BEAM and JavaScript, roundtrip tested, Hex.pm integration ready. Production-ready for manifest parsing; advanced features (recursive queries, cryptographic verification) future work.
