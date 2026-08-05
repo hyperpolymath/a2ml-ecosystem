@@ -1,4 +1,4 @@
-// {{PROJECT}} FFI Build Configuration
+// A2ML_ECOSYSTEM FFI Build Configuration
 // SPDX-License-Identifier: MPL-2.0
 
 const std = @import("std");
