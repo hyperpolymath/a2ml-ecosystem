@@ -21,7 +21,7 @@ jobs:
   membership-integrity:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Check membership manifest and submodule declarations
         run: scripts/check-membership.sh
       - name: Resolve submodule pins
@@ -51,7 +51,7 @@ jobs:
   upstream-pins:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Check upstream spec and governance pins
         run: |
           anchor=".machine_readable/anchors/ANCHOR.a2ml"
@@ -68,7 +68,7 @@ jobs:
   governance-validation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: hyperpolymath/a2ml-ecosystem/validate-action@aa4b836bd969df2bc58128cb8e3d20bbc88d5e79
         with:
           path: "."
@@ -87,7 +87,7 @@ jobs:
   conformance-positive:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: hyperpolymath/a2ml-ecosystem/validate-action@aa4b836bd969df2bc58128cb8e3d20bbc88d5e79
         with:
           path: "conformance/valid"
@@ -96,7 +96,7 @@ jobs:
   conformance-negative:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - id: negative
         continue-on-error: true
         uses: hyperpolymath/a2ml-ecosystem/validate-action@aa4b836bd969df2bc58128cb8e3d20bbc88d5e79
