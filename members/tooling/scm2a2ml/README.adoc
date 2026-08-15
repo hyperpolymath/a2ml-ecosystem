@@ -1,0 +1,144 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+= scm2a2ml
+Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+
+:toc:
+:toc-placement: preamble
+
+== Overview
+
+`scm2a2ml` is a converter from Scheme S-expression format (.scm files) to A2ML format.
+This tool is used to migrate legacy .scm metadata files to the modern A2ML format used across the Hyperpolymath estate.
+
+== Installation
+
+[source,sh]
+----
+cd scm2a2ml
+cargo build --release
+----
+
+The binary will be available at `target/release/scm2a2ml`.
+
+== Usage
+
+=== Convert a single file
+
+[source,sh]
+----
+# Convert and output to stdout
+scm2a2ml input.scm
+
+# Convert and save to output file
+scm2a2ml input.scm -o output.a2ml
+
+# Convert in place (renames .scm to .a2ml)
+scm2a2ml input.scm --in-place
+----
+
+=== Convert a directory
+
+[source,sh]
+----
+# Convert all .scm files in a directory
+scm2a2ml /path/to/directory/
+
+# Convert in place
+scm2a2ml /path/to/directory/ --in-place
+----
+
+=== Dry run
+
+[source,sh]
+----
+# Show what would be done without modifying files
+scm2a2ml input.scm --dry-run
+----
+
+=== Output formats
+
+[source,sh]
+----
+# A2ML format (default)
+scm2a2ml input.scm
+
+# JSON format (for debugging)
+scm2a2ml input.scm -f json
+
+# S-expression format (pretty-printed)
+scm2a2ml input.scm -f sexpr
+----
+
+== Input Format
+
+The tool expects Scheme S-expression format as used in .scm metadata files:
+
+[source,scheme]
+----
+;; SPDX-License-Identifier: CC-BY-SA-4.0
+
+(state
+  (version . "1.0.0")
+  (phase . "framework")
+  (project
+    (name . "my-project")
+    (license . "MPL-2.0")))
+----
+
+== Output Format
+
+The tool outputs A2ML format:
+
+[source,toml]
+----
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath)
+#
+# Converted from .scm format
+
+[metadata]
+version = "1.0.0"
+phase = "framework"
+
+[project]
+name = "my-project"
+license = "AGPL-3.0-or-later"
+----
+
+== Supported S-expression Features
+
+- Atoms (symbols)
+- Strings
+- Numbers (integers)
+- Booleans (`#t`, `#f`)
+- Lists (proper and improper/dotted)
+- Quoted expressions (`'`)
+- Quasiquoted expressions (`` ` ``)
+- Comments (`;` to end of line)
+- Nested structures
+
+== Limitations
+
+- Floating point numbers are not yet supported
+- Character literals are not yet supported
+- Vectors are not yet supported
+- The conversion flattens nested structures into key-value pairs
+
+== License
+
+PMPL-1.0-or-later (see LICENSE file)
+
+== Scripts
+
+This repository includes helper scripts in the `scripts/` directory:
+
+- `fix_a2ml_structure_v2.sh` - Main fix script for restructuring A2ML files
+- `verify_a2ml_structure.sh` - Verification script to check compliance
+- `add_missing_readme_manifest.sh` - Add missing README and manifest files
+- `convert_all_scm.sh` - Convert all remaining .scm files
+
+== See Also
+
+- https://github.com/hyperpolymath/standards[Hyperpolymath Standards]
+- https://github.com/hyperpolymath/standards/tree/main/a2ml[A2ML Format Specification]

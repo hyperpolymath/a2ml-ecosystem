@@ -1,0 +1,25 @@
+[package]
+name = "scm2a2ml"
+version = "0.1.0"
+edition = "2021"
+authors = ["Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>"]
+license = "PMPL-1.0-or-later"
+description = "Converter from Scheme S-expression format (.scm) to A2ML format"
+readme = "README.md"
+keywords = ["scheme", "a2ml", "converter", "transpiler"]
+categories = ["command-line-utilities", "development-tools"]
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+walkdir = "2.4"
+
+[lib]
+name = "scm2a2ml"
+path = "src/lib.rs"
+
+[[bin]]
+name = "scm2a2ml"
+path = "src/main.rs"
