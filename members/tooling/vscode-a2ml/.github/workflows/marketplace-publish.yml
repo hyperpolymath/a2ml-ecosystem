@@ -1,0 +1,117 @@
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
+#
+# Marketplace publication — triggered by version tags (v*).
+# Packages the extension into a .vsix and publishes to the VS Code
+# Marketplace and the Open VSX Registry. Each publish step is gated on
+# the presence of its credential, so a missing credential skips (not
+# fails) that registry.
+#
+# VS Code Marketplace auth: Microsoft Entra ID via GitHub OIDC workload
+# identity federation. No long-lived secret is stored — GitHub mints a
+# short-lived token per run and exchanges it for an Entra access token.
+#
+# Required repository configuration
+#   (Settings -> Secrets and variables -> Actions):
+#
+#   Variables (not sensitive):
+#     AZURE_CLIENT_ID   App registration (service principal) client ID,
+#                       with a federated credential trusting
+#                       repo:hyperpolymath/vscode-a2ml, and the Marketplace
+#                       publisher role granted to that identity.
+#     AZURE_TENANT_ID   Entra tenant ID that owns the publisher.
+#
+#   Secrets:
+#     OVSX_PAT          Open VSX Registry token (optional, open-source
+#                       registry; Open VSX has no Entra/OIDC equivalent).
+#
+# Manual one-off alternative (no CI): see docs/PUBLISHING.adoc
+name: Marketplace Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Package and Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # required to mint the GitHub OIDC token for Entra
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install Deno
+        run: |
+          curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh -s v2.1.4
+          deno --version
+
+      - name: Verify version matches tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PKG_VERSION="$(deno eval 'console.log(JSON.parse(Deno.readTextFileSync("package.json")).version)')"
+          echo "tag=$TAG_VERSION package.json=$PKG_VERSION"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag v$TAG_VERSION does not match package.json version $PKG_VERSION"
+            exit 1
+          fi
+
+      - name: Package .vsix
+        run: |
+          deno run -A --node-modules-dir=auto npm:@vscode/vsce@3.2.1 package --allow-missing-repository
+          ls -la ./*.vsix
+
+      - name: Upload .vsix artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: vsix-package
+          path: ./*.vsix
+          retention-days: 30
+
+      - name: Publish to VS Code Marketplace (Entra OIDC)
+        env:
+          AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${AZURE_CLIENT_ID:-}" ] || [ -z "${AZURE_TENANT_ID:-}" ]; then
+            echo "::warning::AZURE_CLIENT_ID / AZURE_TENANT_ID not set — skipping VS Code Marketplace publish."
+            exit 0
+          fi
+
+          # Mint a GitHub OIDC token scoped to the Entra token-exchange audience.
+          # az preinstalled on ubuntu-latest; no third-party action needed.
+          OIDC_TOKEN="$(curl -sS \
+            -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=api://AzureADTokenExchange" \
+            | jq -r '.value')"
+
+          az login --service-principal \
+            --username "$AZURE_CLIENT_ID" \
+            --tenant "$AZURE_TENANT_ID" \
+            --federated-token "$OIDC_TOKEN" \
+            --allow-no-subscriptions >/dev/null
+
+          # vsce --azure-credential uses DefaultAzureCredential, which picks
+          # up the az CLI session above. No PAT is ever stored or printed.
+          deno run -A --node-modules-dir=auto npm:@vscode/vsce@3.2.1 \
+            publish --azure-credential --packagePath ./*.vsix
+
+          az logout >/dev/null 2>&1 || true
+
+      - name: Publish to Open VSX Registry
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: |
+          if [ -z "${OVSX_PAT:-}" ]; then
+            echo "::warning::OVSX_PAT secret not set — skipping Open VSX publish."
+            exit 0
+          fi
+          deno run -A --node-modules-dir=auto npm:ovsx@0.10.1 publish ./*.vsix --pat "$OVSX_PAT"

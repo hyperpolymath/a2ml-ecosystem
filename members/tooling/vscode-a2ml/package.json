@@ -1,0 +1,69 @@
+{
+  "name": "vscode-a2ml",
+  "displayName": "A2ML - AI-to-Machine Language",
+  "description": "Syntax highlighting, language configuration, and snippets for A2ML (.a2ml) files",
+  "version": "0.1.0",
+  "publisher": "hyperpolymath",
+  "author": {
+    "name": "Jonathan D.A. Jewell",
+    "email": "j.d.a.jewell@open.ac.uk"
+  },
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyperpolymath/vscode-a2ml"
+  },
+  "bugs": {
+    "url": "https://github.com/hyperpolymath/vscode-a2ml/issues"
+  },
+  "homepage": "https://github.com/hyperpolymath/vscode-a2ml#readme",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "a2ml",
+    "ai-to-machine-language",
+    "syntax-highlighting",
+    "attestation"
+  ],
+  "icon": "icons/a2ml-icon.png",
+  "galleryBanner": {
+    "color": "#1e1e2e",
+    "theme": "dark"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "a2ml",
+        "aliases": [
+          "A2ML",
+          "AI-to-Machine Language"
+        ],
+        "extensions": [
+          ".a2ml"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/a2ml-icon.svg",
+          "dark": "./icons/a2ml-icon.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "a2ml",
+        "scopeName": "source.a2ml",
+        "path": "./syntaxes/a2ml.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "a2ml",
+        "path": "./snippets/a2ml.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+= vscode-a2ml Roadmap
+
+== Current Status
+
+Extension work is in pre-publication state.
+
+== Milestones
+
+=== v0.1.0 - Foundation
+* [ ] Core functionality validation
+* [ ] Basic documentation pass
+* [ ] CI/CD baseline
+
+=== v0.1.1 - Marketplace Publication
+* [x] PNG icon generated (Marketplace rejects SVG icons)
+* [x] Automated `Marketplace Publish` workflow (tag-triggered, VS Code + Open VSX)
+* [x] Publishing runbook: link:docs/PUBLISHING.adoc[docs/PUBLISHING.adoc]
+* [x] Entra ID + GitHub OIDC auth (no stored PAT for Marketplace)
+* [ ] One-time Entra setup: app registration + federated credential +
+  grant publisher rights (human step)
+* [ ] Set `AZURE_CLIENT_ID` / `AZURE_TENANT_ID` repo variables, then push
+  a `v*` tag to publish
+
+=== v1.0.0 - Stable Release
+* [ ] Full feature set
+* [ ] Comprehensive tests
+* [ ] Production ready
+
+== Future Directions
+
+Track post-publication telemetry and compatibility feedback to drive v1.x planning.
