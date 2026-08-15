@@ -1,20 +1,20 @@
-= A2ML Ecosystem Coordination Hub
+= A2ML (Attestation Markup Language) Ecosystem Coordination Hub
 :toc: preamble
 
-// SPDX-License-Identifier: CC-BY-SA-4.0
+// SPDX-License-Idenfitier: MPL-2.0 for code
+// SPDX-License-Identifier: CC-BY-SA-4.0 for documentation
 // SPDX-FileCopyrightText: 2025-2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 `hyperpolymath/a2ml-ecosystem` coordinates implementations, tooling, CI
 integrations, examples, and conformance fixtures for A2ML.
 
 This repository is a satellite of `hyperpolymath/standards`. It does not own
-the A2ML specification or governance rules. The upstream specification and
-governance authority are pinned in
-link:.machine_readable/anchors/ANCHOR.a2ml[ANCHOR.a2ml] by tag.
+the Attestation Markup Language (A2ML) specification or governance rules. The upstream specification and
+governance authority are pinned in the https://github.com/hyperpolymath/standards repo
 
 == Owned Here
 
-* link:.machine_readable/6a2/ECOSYSTEM.a2ml[ECOSYSTEM.a2ml] records the member
+* link:.machine_readable/descriptiles/ECOSYSTEM.a2ml[ECOSYSTEM.a2ml] records the member
   repository manifest.
 * link:conformance/manifest.a2ml[conformance/manifest.a2ml] indexes the local
   positive and negative fixtures.
@@ -33,8 +33,8 @@ is intentionally `TODO-tag`.
 Coordination metadata lives under `.machine_readable/` only:
 
 * `anchors/ANCHOR.a2ml` — authority anchor and upstream pins.
-* `6a2/ECOSYSTEM.a2ml` — membership manifest.
-* `6a2/{STATE,META,PLAYBOOK,AGENTIC,NEUROSYM}.a2ml` — hub state, ADRs, playbook,
+* `descriptiles/ECOSYSTEM.a2ml` — membership manifest.
+* `descriptiles/{STATE,META,PLAYBOOK,AGENTIC,NEUROSYM}.a2ml` — hub state, ADRs, playbook,
   and agentic / neuro-symbolic notes.
 
 link:0-AI-MANIFEST.a2ml[0-AI-MANIFEST.a2ml] at the repository root is the entry
@@ -49,9 +49,6 @@ their `main` branches. The groups are:
 * `tooling`
 * `ci`
 * `examples`
-
-`contractiles-a2-lab` is intentionally not a member submodule because it is
-private. It is recorded only as a related project in `ECOSYSTEM.a2ml`.
 
 == Getting Started
 
