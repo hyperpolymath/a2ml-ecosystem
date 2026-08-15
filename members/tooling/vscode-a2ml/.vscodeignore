@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: MPL-2.0
+# Everything is excluded by default; only the allow-listed runtime assets
+# below are shipped in the published .vsix.
+**
+
+!package.json
+!language-configuration.json
+!README.adoc
+!CHANGELOG.md
+!LICENSE
+!LICENSE-PMPL
+!icons/a2ml-icon.png
+!icons/a2ml-icon.svg
+!syntaxes/**
+!snippets/**
+
+# Re-exclude noise that could match the allow-list above
+**/.DS_Store
+**/*.vsix

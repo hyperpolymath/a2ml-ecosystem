@@ -1,0 +1,118 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+= Publishing vscode-a2ml
+:toc: preamble
+:icons: font
+
+How this extension gets "online" — i.e. installable from a marketplace.
+
+== Authentication: Entra ID via OIDC (no stored secret)
+
+The VS Code Marketplace publish uses *Microsoft Entra ID* through *GitHub
+OIDC workload identity federation*. No long-lived Personal Access Token is
+stored anywhere: GitHub mints a short-lived token for each workflow run and
+exchanges it for an Entra access token. This removes the leak / theft /
+rotation risk inherent to PATs.
+
+The one-time setup below must be done by a human with admin rights in the
+Entra tenant that owns the `hyperpolymath` publisher. No automation can
+perform it.
+
+=== One-time Entra setup
+
+. *App registration* — in the Entra tenant that owns the publisher, create
+  an app registration (service principal). Note its *Application (client)
+  ID* and the *Directory (tenant) ID*.
+. *Federated credential* — on that app registration:
+  *Certificates & secrets → Federated credentials → Add credential*.
+  Scenario: *GitHub Actions deploying Azure resources*.
++
+[cols="1,2"]
+|===
+|Field |Value
+
+|Organization |`hyperpolymath`
+|Repository |`vscode-a2ml`
+|Entity type |`Branch` (e.g. `main`) or `Tag` (e.g. `v*`) or `Environment`
+|Audience |`api://AzureADTokenExchange` (default)
+|===
+. *Grant publisher rights* — sign in to
+  https://marketplace.visualstudio.com/manage/publishers/ as the publisher
+  owner and add the service principal as a member of the `hyperpolymath`
+  publisher (Manage rights). If the publisher does not exist yet, create it
+  there once; the publisher ID must equal the `publisher` field in
+  `package.json`.
+. *Expose the IDs to CI* — in GitHub:
+  *Settings → Secrets and variables → Actions → Variables → New repository
+  variable*:
++
+[cols="1,2"]
+|===
+|Variable |Value
+
+|`AZURE_CLIENT_ID` |Application (client) ID from step 1
+|`AZURE_TENANT_ID` |Directory (tenant) ID from step 1
+|===
++
+These are *variables*, not secrets — they are identifiers, not
+credentials, and confer no access without the federated trust.
+. (Optional, open-source registry) Open VSX has no Entra/OIDC equivalent,
+  so it still uses a token. Add secret `OVSX_PAT` from
+  https://open-vsx.org → Settings → Access Tokens. Keep it short-expiry
+  and rotate routinely; omit it entirely to skip Open VSX.
+
+== Automated path (recommended)
+
+After the one-time setup, publishing is a tag push:
+
+[source,bash]
+----
+# bump "version" in package.json first, then:
+git commit -am "Release v0.1.0"
+git tag v0.1.0
+git push origin v0.1.0
+----
+
+The `Marketplace Publish` workflow packages a `.vsix`, authenticates to the
+VS Code Marketplace via Entra OIDC, and publishes (plus Open VSX if
+`OVSX_PAT` is set). Registries without configured credentials are skipped,
+not failed. The workflow can also be run manually via
+*Actions → Marketplace Publish → Run workflow*.
+
+== Manual one-off path (no CI)
+
+OIDC federation only works from GitHub Actions. For a local one-off publish
+you must use an Azure DevOps PAT. Treat this as a fallback, not the norm:
+scope it to *Marketplace → Manage* only, set a short expiry, and never
+commit or persist it.
+
+[source,bash]
+----
+# Create at https://dev.azure.com -> Personal access tokens
+# Organization: All accessible | Scope: Marketplace > Manage
+export VSCE_PAT=...
+deno run -A --node-modules-dir=auto npm:@vscode/vsce@3.2.1 package
+deno run -A --node-modules-dir=auto npm:@vscode/vsce@3.2.1 \
+  publish --packagePath ./*.vsix --pat "$VSCE_PAT"
+----
+
+Alternatively, if you have the Azure CLI logged in to the publisher's
+tenant (`az login`), you can skip the PAT locally too:
+
+[source,bash]
+----
+deno run -A --node-modules-dir=auto npm:@vscode/vsce@3.2.1 \
+  publish --azure-credential --packagePath ./*.vsix
+----
+
+== Verifying it is online
+
+* VS Code Marketplace:
+  https://marketplace.visualstudio.com/items?itemName=hyperpolymath.vscode-a2ml
+* Inside VS Code: `ext install hyperpolymath.vscode-a2ml`
+* Open VSX (if published): https://open-vsx.org/extension/hyperpolymath/vscode-a2ml
+
+== Note: GitHub Pages is a different "online"
+
+The `GitHub Pages` workflow (`casket-pages.yml`) publishes a documentation
+*site*, not the installable extension. Marketplace publication is what makes
+the extension usable; the two are independent.

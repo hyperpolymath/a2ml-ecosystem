@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: MPL-2.0
+name: CodeQL Security Analysis
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '0 6 1 * *'   # monthly 1st 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            build-mode: none
+          - language: actions
+            build-mode: none
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # This repo is a declarative grammar extension with no JS/TS sources.
+      # CodeQL errors out ("no code found") when there is nothing to scan,
+      # so detect presence first and skip cleanly when absent. The step
+      # stays here so analysis activates automatically if JS/TS is added.
+      - name: Detect JavaScript/TypeScript sources
+        id: detect
+        run: |
+          if find . -path ./.git -prune -o -type f \
+              \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' \
+              -o -name '*.jsx' -o -name '*.mjs' -o -name '*.cjs' \) \
+              -print | grep -q .; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No JavaScript/TypeScript sources found — skipping CodeQL analysis."
+          fi
+
+      - name: Initialize CodeQL
+        if: steps.detect.outputs.present == 'true'
+        uses: github/codeql-action/init@0d579ffd059c29b07949a3cce3983f0780820c98 # v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Perform CodeQL Analysis
+        if: steps.detect.outputs.present == 'true'
+        uses: github/codeql-action/analyze@0d579ffd059c29b07949a3cce3983f0780820c98 # v3
+        with:
+          category: "/language:${{ matrix.language }}"
