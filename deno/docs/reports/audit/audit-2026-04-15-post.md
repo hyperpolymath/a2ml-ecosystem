@@ -11,7 +11,7 @@
 
 ## Findings Summary
 - 14 TODO/FIXME/HACK markers in .machine_readable/contractiles/k9/template-hunt.k9.ncl
-- flake.nix declares inputs without narHash, rev pinning, or sibling flake.lock — dependency revision is unpinned in flake.nix
+- flake.guix declares inputs without narHash, rev pinning, or sibling flake.lock — dependency revision is unpinned in flake.guix
 - 8 unsafe get calls in src/A2ML_Parser.res
 
 ## Final Grade

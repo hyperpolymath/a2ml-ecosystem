@@ -6,12 +6,12 @@ SPDX-FileCopyrightText: 2025-2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 # Overview
 
 **Deno-native parser library for A2ML (Attested Markup Language),
-written in ReScript.**
+written in AffineScript.**
 
 A2ML is a structured markup language with built-in attestation
 provenance, directive metadata, and trust-level tracking. This library
 provides a complete parser and renderer for A2ML documents, compiled
-from ReScript to JavaScript ES modules for use with Deno.
+from AffineScript to JavaScript ES modules for use with Deno.
 
 # Features
 
@@ -28,12 +28,12 @@ from ReScript to JavaScript ES modules for use with Deno.
 
 - Attestation provenance chain
 
-- Zero dependencies beyond ReScript standard library
+- Zero dependencies beyond AffineScript standard library
 
 # Quick Start
 
 ```bash
-# Build ReScript to JS
+# Build AffineScript to JS
 deno task build
 
 # Use in your Deno project
@@ -81,14 +81,14 @@ const result = parse("# Hello World\n\nSome **bold** text.\n");
 
     > Block quote text
 
-    ```rescript
+    ```affinescript
     let x = 42
     ```
 
 # Development
 
 ```bash
-deno task build    # Compile ReScript
+deno task build    # Compile AffineScript
 deno task clean    # Clean build artifacts
 deno task test     # Run tests
 ```

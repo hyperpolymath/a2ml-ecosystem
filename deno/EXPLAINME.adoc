@@ -9,19 +9,19 @@ The README makes claims. This file backs them up.
 
 === Claim 1: "Complete parser and renderer for A2ML documents with attestation provenance and trust-level tracking"
 
-**How it works:** The ReScript parser (`src/A2ML_Parser.res`) implements a line-oriented grammar recognizing: headings (`# Title`), paragraphs, inline formatting (bold `**x**`, italic `*x*`, code `` `x` ``), directives (`@key(val):`), attestation blocks (`!attest...!end`), and trust levels (`trust-level: verified|reviewed|automated|unverified`). The AST (in `src/A2ML_Types.res`) represents documents as a tree of blocks and inlines. The `A2ML_Renderer.res` walks the AST and emits back A2ML text, preserving structure (round-trip fidelity: parse then render equals original text). Trust levels are enums tracked in attestation records, enabling queries like "which claims are verified?"
+**How it works:** The AffineScript parser (`src/A2ML_Parser.res`) implements a line-oriented grammar recognizing: headings (`# Title`), paragraphs, inline formatting (bold `**x**`, italic `*x*`, code `` `x` ``), directives (`@key(val):`), attestation blocks (`!attest...!end`), and trust levels (`trust-level: verified|reviewed|automated|unverified`). The AST (in `src/A2ML_Types.res`) represents documents as a tree of blocks and inlines. The `A2ML_Renderer.res` walks the AST and emits back A2ML text, preserving structure (round-trip fidelity: parse then render equals original text). Trust levels are enums tracked in attestation records, enabling queries like "which claims are verified?"
 
 **Caveat:** Trust level is metadata only—the parser doesn't cryptographically verify attestations. If a `trust-level: verified` claim is false, the parser won't detect it. Verification requires external validation (signature checking, authority lookup). The parser is linear (single pass), so it doesn't detect forward references or cross-attestation consistency.
 
 **Evidence:** `src/A2ML_Parser.res` implements parse(text): Result<Document> with explicit trust-level variants. `src/A2ML_Renderer.res` implements render(doc): String. Tests in `src/tests/` verify round-trip fidelity and all syntax forms.
 
-=== Claim 2: "Deno-native with zero dependencies, compiled from ReScript to ES6 JavaScript modules"
+=== Claim 2: "Deno-native with zero dependencies, compiled from AffineScript to ES6 JavaScript modules"
 
-**How it works:** The library is written in ReScript (.res files) and compiled to JavaScript ES6 modules using ReScript's toolchain (invoked via `deno task build`). The generated JavaScript has no external dependencies—it uses only Deno's standard library (console for logging, Uint8Array for buffers if needed). The build output is ESM (ECMAScript Modules) with proper import/export statements. Users add the package to their Deno project via `deno add jsr:@hyperpolymath/a2ml`, and Deno's dependency resolver caches it. No package.json, no node_modules, no npm—pure Deno integration.
+**How it works:** The library is written in AffineScript (.res files) and compiled to JavaScript ES6 modules using AffineScript's toolchain (invoked via `deno task build`). The generated JavaScript has no external dependencies—it uses only Deno's standard library (console for logging, Uint8Array for buffers if needed). The build output is ESM (ECMAScript Modules) with proper import/export statements. Users add the package to their Deno project via `deno add jsr:@hyperpolymath/a2ml`, and Deno's dependency resolver caches it. No package.json, no node_modules, no npm—pure Deno integration.
 
-**Caveat:** ReScript compilation adds a build step. If Deno directly executes .res files, there's a type-checking overhead. The generated JavaScript is readable but less idiomatic than hand-written JavaScript. ReScript's error messages can be cryptic for beginners.
+**Caveat:** AffineScript compilation adds a build step. If Deno directly executes .res files, there's a type-checking overhead. The generated JavaScript is readable but less idiomatic than hand-written JavaScript. AffineScript's error messages can be cryptic for beginners.
 
-**Evidence:** `deno.json` specifies build task (`deno task build` → rescript compile); `src/A2ML.res` exports public API (`parse`, `render`, `parseErrorToString`); generated JS in `lib/` is published to JSR.
+**Evidence:** `deno.json` specifies build task (`deno task build` → affinescript compile); `src/A2ML.res` exports public API (`parse`, `render`, `parseErrorToString`); generated JS in `lib/` is published to JSR.
 
 == Technology Choices
 
@@ -29,7 +29,7 @@ The README makes claims. This file backs them up.
 |===
 | Technology | Learn More
 
-| **ReScript** | Compiles to ES6 JavaScript, type-safe
+| **AffineScript** | Compiles to ES6 JavaScript, type-safe
 | **Deno** | Modern runtime (no Node/npm), JSR package registry
 | **A2ML Spec** | Markup language with attestation and trust levels
 |===

@@ -185,7 +185,7 @@ document structures.
 | `deno.json` / `deno.lock`
 | Deno runtime config and lockfile.
 
-| `guix.scm` / `flake.nix`
+| `guix.scm` / `flake.guix`
 | Reproducible build environment declarations.
 
 | `stapeln.toml`
