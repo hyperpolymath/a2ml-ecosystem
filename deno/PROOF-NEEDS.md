@@ -3,7 +3,7 @@
 ## Current state
 - ABI directory exists (template-level)
 - No dangerous patterns found
-- 2.2K lines; ReScript-based A2ML parser with trust-level hierarchy
+- 2.2K lines; AffineScript-based A2ML parser with trust-level hierarchy
 
 ## What needs proving
 - **Trust-level ordering**: Prove the trust hierarchy (Unverified < Automated < Reviewed < Verified) forms a total order and that attestation operations never silently upgrade trust level

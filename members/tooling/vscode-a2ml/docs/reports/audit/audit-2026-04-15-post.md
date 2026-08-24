@@ -22,10 +22,10 @@ Remaining findings: {
     },
     {
       "category": "SupplyChain",
-      "location": "flake.nix",
-      "file": "flake.nix",
+      "location": "flake.guix",
+      "file": "flake.guix",
       "severity": "High",
-      "description": "flake.nix declares inputs without narHash, rev pinning, or sibling flake.lock — dependency revision is unpinned in flake.nix",
+      "description": "flake.guix declares inputs without narHash, rev pinning, or sibling flake.lock — dependency revision is unpinned in flake.guix",
       "recommended_attack": []
     }
   ],
@@ -40,7 +40,7 @@ Remaining findings: {
   },
   "file_statistics": [
     {
-      "file_path": "flake.nix",
+      "file_path": "flake.guix",
       "lines": 170,
       "unsafe_blocks": 0,
       "panic_sites": 0,
@@ -86,7 +86,7 @@ Remaining findings: {
   "dependency_graph": {
     "edges": [
       {
-        "from": "flake.nix",
+        "from": "flake.guix",
         "to": "setup.sh",
         "relation": "shared_dir:",
         "weight": 1.0

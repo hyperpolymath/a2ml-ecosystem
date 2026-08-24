@@ -8,7 +8,7 @@ Declared intent and purpose for A2Ml Deno.
 
 ## Purpose
 
-A2Ml Deno — **Deno-native parser library for A2ML (Attested Markup Language), written in ReScript.**
+A2Ml Deno — **Deno-native parser library for A2ML (Attested Markup Language), written in AffineScript.**
 
 ## Anti-Purpose
 

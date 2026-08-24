@@ -143,7 +143,7 @@ config :a2ml_ex,
 
 == Related Libraries
 
-* link:https://github.com/hyperpolymath/a2ml-deno[a2ml-deno] — Deno/ReScript implementation
+* link:https://github.com/hyperpolymath/a2ml-deno[a2ml-deno] — Deno/AffineScript implementation
 * link:https://github.com/hyperpolymath/a2ml-rs[a2ml-rs] — Rust implementation  
 * link:https://github.com/hyperpolymath/a2ml-haskell[a2ml-haskell] — Haskell implementation
 * link:https://github.com/hyperpolymath/a2ml_gleam[a2ml_gleam] — Gleam implementation

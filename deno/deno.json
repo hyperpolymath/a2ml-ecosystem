@@ -5,13 +5,13 @@
     ".": "./mod.ts"
   },
   "tasks": {
-    "build": "deno run -A npm:rescript build",
-    "clean": "deno run -A npm:rescript clean",
+    "build": "deno run -A npm:affinescript build",
+    "clean": "deno run -A npm:affinescript clean",
     "test": "deno test --allow-read"
   },
   "imports": {
-    "rescript": "npm:rescript@11.*",
-    "@rescript/core": "npm:@rescript/core@1.*"
+    "affinescript": "npm:affinescript@11.*",
+    "@affinescript/core": "npm:@affinescript/core@1.*"
   },
   "nodeModulesDir": "auto"
 }

@@ -131,7 +131,7 @@ config :a2ml_ex,
 # Related Libraries
 
 - [a2ml-deno](https://github.com/hyperpolymath/a2ml-deno) —
-  Deno/ReScript implementation
+  Deno/AffineScript implementation
 
 - [a2ml-rs](https://github.com/hyperpolymath/a2ml-rs) — Rust
   implementation

@@ -32,7 +32,7 @@
 - File: `/var/mnt/eclipse/repos/gossamer/0-AI-MANIFEST.a2ml`
 - Result: FULL COMPLIANCE. All 8 structural fields present. Proper S-expression format with identity, purpose, context-tiers, canonical-locations, and invariants.
 
-**2. boj-server (ReScript/Deno — MCP server)**
+**2. boj-server (AffineScript/Deno — MCP server)**
 - File: `/var/mnt/eclipse/repos/boj-server/0-AI-MANIFEST.a2ml`
 - Result: FULL COMPLIANCE. All 8 structural fields present. Well-structured manifest with 110 lines.
 

@@ -35,8 +35,8 @@ These are maintenance tasks — not blocking, but should be addressed.
 - run: test -z "$(git ls-files server/_build/ server/deps/ 2>/dev/null)"
 - severity: warning
 
-### no-tracked-rescript-build
-- description: No ReScript build artifacts tracked in git
+### no-tracked-affinescript-build
+- description: No AffineScript build artifacts tracked in git
 - run: test -z "$(git ls-files 'client/web/src/**/*.res.mjs' client/web/lib/ 2>/dev/null)"
 - severity: warning
 

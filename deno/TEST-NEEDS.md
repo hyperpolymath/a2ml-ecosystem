@@ -3,7 +3,7 @@
 ## CRG Grade: C — ACHIEVED 2026-04-04
 
 ## Current State
-- Unit tests: NONE (no Deno/ReScript test files found)
+- Unit tests: NONE (no Deno/AffineScript test files found)
 - Integration tests: 1 Zig integration test (ABI/FFI template)
 - E2E tests: NONE
 - Benchmarks: NONE (benchmark dir has only README placeholder)
@@ -35,7 +35,7 @@
 ### Build & Execution
 - [ ] deno check — not verified
 - [ ] deno test — not verified
-- [ ] ReScript build — not verified
+- [ ] AffineScript build — not verified
 - [ ] Zig build — not verified
 - [ ] Self-diagnostic — none
 
@@ -49,4 +49,4 @@
 - [ ] Built-in doctor/check command (if applicable)
 
 ## Priority
-- **HIGH** — A2ML is a critical format in the ecosystem. 4 ReScript source files + 3 Idris2 ABI + 2 Zig FFI files with ZERO functional tests. The fuzz directory contains only a placeholder.txt. As a library consumed by other projects, this needs comprehensive tests.
+- **HIGH** — A2ML is a critical format in the ecosystem. 4 AffineScript source files + 3 Idris2 ABI + 2 Zig FFI files with ZERO functional tests. The fuzz directory contains only a placeholder.txt. As a library consumed by other projects, this needs comprehensive tests.
