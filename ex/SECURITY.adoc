@@ -1,0 +1,67 @@
+== Security Policy
+
+=== Supported Versions
+
+[cols=",",options="header",]
+|===
+|Version |Supported
+|0.x.x |:white_check_mark:
+|===
+
+=== Reporting a Vulnerability
+
+*Do not report security vulnerabilities through public GitHub issues.*
+
+Instead, please report them via:
+
+[arabic]
+. *Email*: security@hyperpolymath.org (preferred)
+. *GitHub Security Advisories*:
+https://github.com/hyperpolymath/a2ml_ex/security/advisories/new[Create
+a private advisory]
+
+==== What to include
+
+* Type of vulnerability (injection, deserialization, etc.)
+* Full path to affected source file(s)
+* Step-by-step instructions to reproduce
+* Proof-of-concept or exploit code (if available)
+* Impact assessment
+
+==== Response Timeline
+
+* *Acknowledgment*: Within 48 hours
+* *Initial assessment*: Within 7 days
+* *Resolution target*: Within 90 days (may vary based on severity)
+
+==== Safe Harbor
+
+We consider security research conducted in accordance with this policy
+to be: - Authorized - Lawful - Helpful
+
+We will not pursue legal action against researchers who follow this
+policy.
+
+=== Security Measures
+
+This project implements:
+
+* [x] Dependabot alerts enabled
+* [x] CodeQL static analysis
+* [x] OpenSSF Scorecard compliance
+* [x] Signed commits required
+* [x] Branch protection enabled
+* [x] Zero runtime dependencies beyond Elixir standard library
+
+=== Known Limitations
+
+The A2ML parser processes untrusted input. While the Elixir
+implementation benefits from BEAM VM memory safety:
+
+[arabic]
+. *Parser input* may contain maliciously crafted documents
+. *Directive evaluation* does not execute arbitrary code
+. *Trust level assertions* are metadata only — they do not provide
+cryptographic guarantees without external verification
+
+Report issues in any layer — we take all security concerns seriously.

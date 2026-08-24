@@ -1,0 +1,64 @@
+== Test & Benchmark Requirements
+
+=== CRG Grade: C — ACHIEVED 2026-04-04
+
+=== Current State
+
+* Unit tests: NONE (no Haskell test files found, no test-suite in .cabal
+verified)
+* Integration tests: 1 Zig integration test (ABI/FFI template)
+* E2E tests: NONE
+* Benchmarks: NONE (benchmark dir has only README placeholder)
+* panic-attack scan: NEVER RUN
+
+=== What’s Missing
+
+==== Point-to-Point (P2P)
+
+* Data/A2ML.hs (main module) — no tests
+* Data/A2ML/Types.hs — no tests
+* Data/A2ML/Parser.hs — no tests (parser is most critical)
+* Data/A2ML/Renderer.hs — no tests
+* Idris2 ABI definitions — no verification tests
+* Zig FFI — only template integration test
+* tests/fuzz/ contains only placeholder.txt
+
+==== End-to-End (E2E)
+
+* Parse A2ML document and verify output
+* Render A2ML and verify format
+* Round-trip fidelity
+* QuickCheck / Hedgehog property-based tests for parser correctness
+* Error handling for malformed input
+
+==== Aspect Tests
+
+* [ ] Security (untrusted A2ML input)
+* [ ] Performance (parsing large documents, lazy evaluation pitfalls)
+* [ ] Concurrency (N/A for library)
+* [ ] Error handling (partial parse, encoding issues)
+* [ ] Accessibility (N/A)
+
+==== Build & Execution
+
+* [ ] cabal build — not verified
+* [ ] cabal test — not verified (no test-suite section found)
+* [ ] Self-diagnostic — none
+
+==== Benchmarks Needed
+
+* Parse throughput vs Rust and Elixir implementations
+* Memory usage (Haskell lazy evaluation can hide space leaks)
+* Criterion benchmarks for parser and renderer
+
+==== Self-Tests
+
+* [ ] panic-attack assail on own repo
+* [ ] Built-in doctor/check command (if applicable)
+
+=== Priority
+
+* *HIGH* — 4 Haskell source modules with ZERO tests. For a Haskell
+library, the absence of property-based tests (QuickCheck/Hedgehog) is
+especially damning. The fuzz directory is empty. No benchmark code
+despite benchmark dir existing.
