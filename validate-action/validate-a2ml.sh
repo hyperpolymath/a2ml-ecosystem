@@ -172,7 +172,7 @@ validate_a2ml() {
     if [[ "$basename" == *"AI-MANIFEST"* ]]; then
         is_manifest=true
     fi
-    # Canonical typed manifests under .machine_readable/descriptiles/ — identity comes
+    # Canonical typed manifests under <machine tree>/descriptiles/ — identity comes
     # from the enclosing directory + filename, not an in-file field. Sibling
     # files in the same directory (ECOSYSTEM.a2ml, STATE.a2ml) DO carry their
     # own $name/project and continue to be validated normally.
@@ -203,16 +203,17 @@ validate_a2ml() {
         is_contractile_shape=true
     fi
 
-    # Canonical structured A2ML tree. Everything under a `.machine_readable/`
-    # directory is a typed agent-readable doc (CLADE, ANCHOR, STATE,
-    # ECOSYSTEM, bot_directives/{debt,coverage,methodology}, ai/AI,
-    # policies/*, integrations/*, …). Per the RSR convention these carry
-    # identity structurally — owning repo + path + filename — not via an
-    # in-file `name`/`agent-id`. This generalises the `.machine_readable/descriptiles/`
-    # rationale above to the whole tree: rsr-template-repo itself ships these
-    # files without an in-file identity key, so requiring one produces
-    # estate-wide false positives on every repo built from the canonical
-    # template. Files outside `.machine_readable/` are still validated.
+    # The structured A2ML tree. Everything under a repo's machine tree —
+    # `machine-readable/` canonically, `.machine_readable/` in the legacy
+    # layout — is a typed agent-readable doc (CLADE, ANCHOR, STATE, ECOSYSTEM,
+    # bot_directives/{debt,coverage,methodology}, ai/AI, policies/*,
+    # integrations/*, …). Per the RSR convention these carry identity
+    # structurally — owning repo + path + filename — not via an in-file
+    # `name`/`agent-id`. This generalises the `descriptiles/` rationale above
+    # to the whole tree: rsr-template-repo itself ships these files without an
+    # in-file identity key, so requiring one produces estate-wide false
+    # positives on every repo built from the canonical template. Files outside
+    # the machine tree are still validated.
     #
     # The machine tree is named `machine-readable/` canonically (un-hidden
     # 2026-08); `.machine_readable/` is the LEGACY name. BOTH are matched: the
