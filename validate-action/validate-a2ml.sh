@@ -224,9 +224,12 @@ validate_a2ml() {
     # separate implementation from the template's vendored copy, kept matching
     # the old name only.
     local is_structural_identity=false
+    # `*` matches the empty string, so */machine-readable/* already covers the
+    # ./-prefixed form that `find .` emits; spelling it out separately (as the
+    # original three-branch test did) is redundant. Verified equivalent across
+    # ./-prefixed, bare and absolute paths, and on the negative cases.
     case "$file" in
-        */machine-readable/*|./machine-readable/*|machine-readable/*| \
-        */.machine_readable/*|./.machine_readable/*|.machine_readable/*)
+        */machine-readable/*|machine-readable/*|*/.machine_readable/*|.machine_readable/*)
             is_structural_identity=true
             ;;
     esac
