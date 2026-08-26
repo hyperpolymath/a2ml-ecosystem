@@ -213,10 +213,23 @@ validate_a2ml() {
     # files without an in-file identity key, so requiring one produces
     # estate-wide false positives on every repo built from the canonical
     # template. Files outside `.machine_readable/` are still validated.
+    #
+    # The machine tree is named `machine-readable/` canonically (un-hidden
+    # 2026-08); `.machine_readable/` is the LEGACY name. BOTH are matched: the
+    # canon, scaffoldia, the julia variant and ~300 minted repos still carry the
+    # dotted form, while rsr-template-repo has moved. Matching only one name
+    # makes whichever half of the estate has not migrated fail this check with
+    # 16 spurious "missing identity field" errors -- which is exactly what
+    # happened when the template renamed its tree and this action, being a
+    # separate implementation from the template's vendored copy, kept matching
+    # the old name only.
     local is_structural_identity=false
-    if [[ "$file" == *"/.machine_readable/"* || "$file" == "./.machine_readable/"* || "$file" == ".machine_readable/"* ]]; then
-        is_structural_identity=true
-    fi
+    case "$file" in
+        */machine-readable/*|./machine-readable/*|machine-readable/*| \
+        */.machine_readable/*|./.machine_readable/*|.machine_readable/*)
+            is_structural_identity=true
+            ;;
+    esac
 
     if [[ "$has_identity" == "false" && "$is_manifest" == "false" && "$is_contractile_shape" == "false" && "$is_structural_identity" == "false" ]]; then
         report_issue "error" "$file" 1 \
