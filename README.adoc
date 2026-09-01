@@ -24,9 +24,15 @@ governance authority are pinned in the https://github.com/hyperpolymath/standard
 
 == Not Owned Here
 
-The A2ML specification is owned by `hyperpolymath/standards`. This hub points
-to `a2ml/SPEC.adoc` there; until the first standards tag is cut, the pin
-is intentionally `TODO-tag`.
+The A2ML specification is owned by `hyperpolymath/a2ml`, not by this hub and
+not by `hyperpolymath/standards`. It was carved out of `standards` by
+`24a12d6f` ("carve-out: evict a2ml, lol and the repo-guardian pair"); any
+pointer still naming `standards` as the spec upstream resolves only inside a
+frozen pin. Three surface dialects are pinned: `SPEC.adoc` (typed core +
+markup surface), `RECORD-DIALECT-SPEC.adoc`, `MANIFEST-DIALECT-SPEC.adoc`.
+See link:spec/README.adoc[spec/README.adoc] for the pins.
+
+Governance remains owned by `hyperpolymath/standards` (`GOVERNANCE.adoc`).
 
 == Machine-Readable Layout
 

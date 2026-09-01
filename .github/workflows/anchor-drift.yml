@@ -62,7 +62,7 @@ jobs:
           echo "upstream pins:"
           echo "$pins"
           if echo "$pins" | grep -q 'TODO-tag'; then
-            echo "::notice::upstream pin is still TODO-tag — advisory only until the first standards tag is cut"
+            echo "::notice::upstream pin is still TODO-tag — advisory only until hyperpolymath/a2ml cuts its first spec release tag"
           fi
 
   governance-validation:

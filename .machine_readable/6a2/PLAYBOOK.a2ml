@@ -16,12 +16,12 @@
       (step "A fixture COMMENT must not contain the literal license token, or a missing-license negative self-passes")
       (step "Verify: validate conformance/valid (0 errors) and conformance/invalid strict (every case errors)"))
     (bump-upstream-pin
-      (step "Cut or identify the target tag in hyperpolymath/standards")
-      (step "Replace pin = TODO-tag in .machine_readable/anchors/ANCHOR.a2ml under [upstream.spec] and [upstream.governance]")
-      (step "Mirror the pin in .machine_readable/6a2/ECOSYSTEM.a2ml (upstream ...)")
+      (step "Cut or identify the target release tag: hyperpolymath/a2ml for the spec, hyperpolymath/standards for governance")
+      (step "Replace the commit pin in .machine_readable/anchors/ANCHOR.a2ml under [upstream.spec], [upstream.spec.record-dialect], [upstream.spec.manifest-dialect] and [upstream.governance]")
+      (step "Mirror the pins in .machine_readable/6a2/ECOSYSTEM.a2ml (upstream ...) and 0-AI-MANIFEST.a2ml (not-owned-here ...)")
       (step "Make the upstream-pins CI gate enforcing")))
   (open-threads
-    (thread "Pin canonical A2ML spec tag in standards; replace TODO-tag")
+    (thread "Cut the first A2ML release tag in hyperpolymath/a2ml and swap the commit pins for tag pins")
     (thread "Ratify a2mliser (in) and contractiles-a2-lab (cross-ref)")
     (thread "Add canonical parse-AST expected.json and expand the corpus")
     (thread "Governance parity: stamp standard .machine_readable + CONTRIBUTING/SECURITY/COC from standards")))

@@ -23,8 +23,10 @@
     (membership ".machine_readable/6a2/ECOSYSTEM.a2ml")
     (drift-ci ".github/workflows/anchor-drift.yml"))
   (not-owned-here
-    (spec (repo "hyperpolymath/standards") (path "docs/A2ML-SPEC.adoc") (pin "TODO-tag"))
-    (governance (repo "hyperpolymath/standards") (path "GOVERNANCE.adoc") (pin "TODO-tag")))
+    (spec (repo "hyperpolymath/a2ml") (path "SPEC.adoc") (pin "75704e4cac33bd11db32958fdc7e0ae4ec916b39"))
+    (spec-record-dialect (repo "hyperpolymath/a2ml") (path "RECORD-DIALECT-SPEC.adoc") (pin "75704e4cac33bd11db32958fdc7e0ae4ec916b39"))
+    (spec-manifest-dialect (repo "hyperpolymath/a2ml") (path "MANIFEST-DIALECT-SPEC.adoc") (pin "75704e4cac33bd11db32958fdc7e0ae4ec916b39"))
+    (governance (repo "hyperpolymath/standards") (path "GOVERNANCE.adoc") (pin "0ef5917b3a6742dc69b6758b3e40a7beb8b97d04")))
   (entrypoints
     (human "README.adoc")
     (roadmap "ROADMAP.adoc")

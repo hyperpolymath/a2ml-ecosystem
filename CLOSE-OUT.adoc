@@ -7,7 +7,8 @@ Decision ledger for the coordination-hub rebuild.
 * *Shape.* The hub is a coordination hub plus pinned submodules — a
 sibling of `+developer-ecosystem+` and a satellite of
 `+hyperpolymath/standards+`.
-* *Spec home.* The A2ML specification lives in
+* *Spec home.* [SUPERSEDED 2026-09-01 — see "Superseded" below]
+The A2ML specification lives in
 `+hyperpolymath/standards+` (`+docs/A2ML-SPEC.adoc+`). This hub pins it
 by tag; it does not own it.
 * *Drift model.* Pin + verify: upstream spec and governance are
@@ -48,3 +49,19 @@ and unverifiable).
 
 * After the PR merges, delete the development branch
 `+claude/gracious-goodall-4vnq77+`.
+
+=== Superseded
+
+* *Spec home (2026-09-01).* The "Spec home" decision above is superseded.
+The specification is owned by `+hyperpolymath/a2ml+`, not by
+`+hyperpolymath/standards+`. It was carved out of `+standards+` by
+`+24a12d6f+` ("carve-out: evict a2ml, lol and the repo-guardian pair");
+`+standards+` no longer holds it at HEAD.
++
+The recorded path `+docs/A2ML-SPEC.adoc+` never existed in `+standards+` at
+any commit — the file there was `+a2ml/SPEC.adoc+`. So this ledger entry was
+wrong on the path from the day it was written, independently of the carve-out.
++
+Pins are now commit pins, not `+TODO-tag+`; no A2ML release tag has been cut.
+Three surface dialects are pinned rather than one document. Current pointers
+live in `+spec/README.adoc+` and `+.machine_readable/anchors/ANCHOR.a2ml+`.

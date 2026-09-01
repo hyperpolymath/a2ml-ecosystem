@@ -4,7 +4,10 @@
 // Skeleton: headings and one-line intents only.
 
 == Bump the upstream pin
-Replace `TODO-tag` in `.machine_readable/anchors/ANCHOR.a2ml` once standards cuts a tag.
+Pins are commit pins today. Swap them for tag pins once `hyperpolymath/a2ml` cuts
+its first spec release tag (governance tags come from `hyperpolymath/standards`).
+Update all four blocks in `.machine_readable/anchors/ANCHOR.a2ml`, then mirror
+into `ECOSYSTEM.a2ml` and `0-AI-MANIFEST.a2ml`.
 
 == Ratify membership changes
 Approve additions/removals and keep `ECOSYSTEM.a2ml` and `check-membership.sh` in lockstep.
@@ -13,4 +16,5 @@ Approve additions/removals and keep `ECOSYSTEM.a2ml` and `check-membership.sh` i
 Stamp the standard `.machine_readable` surface and CONTRIBUTING/SECURITY/COC from standards.
 
 == Enable enforcing drift gates
-Flip the `upstream-pins` CI job to fail on `TODO-tag` after the first real pin.
+Flip the `upstream-pins` CI job to enforcing: fail on any unresolvable pin, and on
+any pointer naming `hyperpolymath/standards` as the spec upstream.

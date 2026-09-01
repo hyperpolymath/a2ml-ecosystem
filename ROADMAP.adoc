@@ -4,14 +4,15 @@
 
 == Outstanding Decisions
 
-* *Spec pin.* Pin the canonical A2ML spec tag in `hyperpolymath/standards` and
-  replace `TODO-tag` in `.machine_readable/anchors/ANCHOR.a2ml`.
+* *Spec pin.* Cut the first A2ML spec release tag in `hyperpolymath/a2ml` and
+  swap the commit pins in `.machine_readable/anchors/ANCHOR.a2ml` for tag pins.
+  (The spec is no longer in `standards`; carved out by `24a12d6f`.)
 * *Membership ratification.* Ratify `a2mliser` as a tooling member and confirm
   `contractiles-a2-lab` remains a private cross-reference (never a submodule).
 
 == Tracked Issues
 
-* Pin canonical spec in standards + replace TODO-tag — `decision`, `governance`
+* Cut first A2ML spec tag in hyperpolymath/a2ml; swap commit pins for tag pins — `decision`, `governance`
 * Member rollout: ANCHOR satellite+pin+conformance CI; enable upstream-pins — `rollout`
 * Canonical parse-AST (expected.json) + expand conformance corpus — `conformance`
 * Governance parity: stamp standard `.machine_readable` + CONTRIBUTING/SECURITY/COC

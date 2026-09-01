@@ -3,10 +3,10 @@
   (metadata
     (name "a2ml-ecosystem-state")
     (version "0.1.0")
-    (updated "2026-06-27"))
+    (updated "2026-09-01"))
   (status
     (phase "coordination-hub scaffolded; close-out in review")
     (build "rebuilt to .machine_readable canon; conformance corpus verified locally")
-    (upstream-pin "TODO-tag — awaiting first hyperpolymath/standards tag")
+    (upstream-pin "commit pins; spec from hyperpolymath/a2ml (3 dialects), governance from hyperpolymath/standards; no A2ML release tag cut yet")
     (membership "12 members declared as submodule gitlinks; pins resolve in CI")
     (open "see ROADMAP.adoc and PLAYBOOK.a2ml open-threads")))
