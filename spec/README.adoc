@@ -6,10 +6,21 @@ The A2ML specification is not owned in this coordination hub.
 
 Canonical upstream:
 
-* Repository: `hyperpolymath/standards`
-* Path: `a2ml/SPEC.adoc` (typed core + markup surface, v1.1.0)
-* Companion: `a2ml/RECORD-DIALECT-SPEC.adoc` (record surface for descriptiles, v1.0.0)
-* Pin: `891b1ed6164478616cb3375f328c6487ccb13f80` (commit pin; no A2ML release tag cut yet)
+* Repository: `hyperpolymath/a2ml`
+* Path: `SPEC.adoc` (typed core + markup surface, v1.1.0)
+* Companion: `RECORD-DIALECT-SPEC.adoc` (record surface for descriptiles, v1.0.0)
+* Companion: `MANIFEST-DIALECT-SPEC.adoc` (manifest surface, v0.1.0)
+* Pin: `75704e4cac33bd11db32958fdc7e0ae4ec916b39` (commit pin; no A2ML release tag cut yet)
+
+The specification was carved out of `hyperpolymath/standards` by
+`24a12d6f` ("carve-out: evict a2ml, lol and the repo-guardian pair").
+`standards` no longer holds `a2ml/SPEC.adoc` at HEAD; any pointer naming
+`hyperpolymath/standards` as the spec upstream is pointing at a path that
+survives only inside a frozen pin.
+
+The three companions above are the three sanctioned surface dialects. A surface
+dialect is legitimate exactly when it has a defined translation into the typed
+core; see `SPEC.adoc` §3.
 
 The corresponding governance authority is pinned in
 link:../.machine_readable/anchors/ANCHOR.a2ml[ANCHOR.a2ml].

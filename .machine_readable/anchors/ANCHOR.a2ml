@@ -2,7 +2,7 @@
 name = "a2ml-ecosystem"
 version = "0.1.0"
 authority = "coordination-hub"
-updated = "2026-06-27"
+updated = "2026-09-01"
 
 [semantic-authority]
 policy = "satellite"
@@ -14,14 +14,24 @@ local-ownership = [
 ]
 
 [upstream.spec]
-repo = "hyperpolymath/standards"
-path = "docs/A2ML-SPEC.adoc"
-pin = "TODO-tag"
+repo = "hyperpolymath/a2ml"
+path = "SPEC.adoc"
+pin = "75704e4cac33bd11db32958fdc7e0ae4ec916b39"
+
+[upstream.spec.record-dialect]
+repo = "hyperpolymath/a2ml"
+path = "RECORD-DIALECT-SPEC.adoc"
+pin = "75704e4cac33bd11db32958fdc7e0ae4ec916b39"
+
+[upstream.spec.manifest-dialect]
+repo = "hyperpolymath/a2ml"
+path = "MANIFEST-DIALECT-SPEC.adoc"
+pin = "75704e4cac33bd11db32958fdc7e0ae4ec916b39"
 
 [upstream.governance]
 repo = "hyperpolymath/standards"
 path = "GOVERNANCE.adoc"
-pin = "TODO-tag"
+pin = "0ef5917b3a6742dc69b6758b3e40a7beb8b97d04"
 
 [attestation]
 proof = "satellite anchor records upstream authority and local coordination scope"
