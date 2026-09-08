@@ -7,15 +7,18 @@
 
 [IMPORTANT]
 ====
-*The format is now DEED (`.deed`), not A2ML.* Renamed 2026-09-03, ruled final.
-The normative grammar — syntax, semantics and typechecking — is
-`deed/spec/DEED-GRAMMAR-SPEC.adoc` in `hyperpolymath/standards`
-(https://github.com/hyperpolymath/standards/pull/752[standards#752]). There is
-exactly one normative source; this hub holds a pointer to it, never a copy.
+*The DEED format name and `.deed` extension are final, not A2ML.* Renamed
+2026-09-03, ruled final. Its proposed grammar — syntax, semantics and
+typechecking — is `deed/spec/DEED-GRAMMAR-SPEC.adoc` in
+`hyperpolymath/standards`
+(https://github.com/hyperpolymath/standards/pull/752[standards#752]). After it
+merges, it will be the single normative source; this hub holds a pointer to it,
+never a copy.
 
-DEED is an *s-expression* format. There is no `key = value` production and no
-`[section]` production; the only bracket is `(`. Any document in this estate
-describing the family as "TOML-like key-value" is superseded v1 text — see
+DEED `.deed` documents use an *s-expression* format. There is no `key = value`
+production and no `[section]` production; the only bracket is `(`. This syntax
+statement does not apply to retained A2ML v1 material. The stale "TOML-like
+key-value" wording is superseded for DEED — see
 https://github.com/hyperpolymath/standards/pull/753[standards#753].
 
 *This repository is to be renamed `deed-ecosystem`* and restructured to match
@@ -48,9 +51,10 @@ governance authority are pinned in the https://github.com/hyperpolymath/standard
 
 == Not Owned Here
 
-The format specification is owned by `hyperpolymath/standards`. This hub points
-to `deed/spec/DEED-GRAMMAR-SPEC.adoc` there -- see link:spec/README.adoc[spec/README.adoc]
-for the pin and its history.
+The format specification is owned by `hyperpolymath/standards` and is pending
+until https://github.com/hyperpolymath/standards/pull/752[standards#752] merges.
+This hub will then point to `deed/spec/DEED-GRAMMAR-SPEC.adoc` there -- see
+link:spec/README.adoc[spec/README.adoc] for the pin and its history.
 
 The previous pointer, `a2ml/SPEC.adoc`, was correct when written but went stale
 on 2026-08-28 when commit `24a12d6f` carved `a2ml/` out of `standards` into the
