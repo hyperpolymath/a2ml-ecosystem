@@ -108,3 +108,15 @@ jobs:
         run: |
           echo "invalid A2ML fixtures unexpectedly passed"
           exit 1
+
+  # Runs the validator from THIS ref, not the pinned published action, so a
+  # change to validate-a2ml.sh is exercised by the same commit that makes it.
+  # Asserts on the discovery COUNT as well as the exit code: the defect this
+  # guards (the scan glob matching only '*.a2ml') produced a green exit 0 by
+  # opening no .deed files at all, so exit status alone cannot detect it.
+  deed-conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Deed fixtures — all four ruled heads
+        run: bash conformance/run-deed-tests.sh

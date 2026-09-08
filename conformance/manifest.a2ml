@@ -3,17 +3,24 @@
   (metadata
     (name "a2ml-conformance-corpus")
     (version "0.1.0")
-    (updated "2026-06-21"))
+    (updated "2026-09-09"))
 
   (positive-fixtures
     (fixture "valid/basic-project.a2ml" (expect "pass"))
     (fixture "valid/attested-agent.a2ml" (expect "pass"))
     (fixture "valid/s-expression-state.a2ml" (expect "pass"))
-    (fixture "valid/sectioned-manifest.a2ml" (expect "pass")))
+    (fixture "valid/sectioned-manifest.a2ml" (expect "pass"))
+    ;; one per ruled deed head — DEED-GRAMMAR-SPEC <<document-forms>>
+    (fixture "valid/estate_chora.deed" (expect "pass") (head "estate-deed"))
+    (fixture "valid/vexometer_chora.deed" (expect "pass") (head "repo-deed"))
+    (fixture "valid/cadastre_praxis.deed" (expect "pass") (head "praxis-deed"))
+    (fixture "valid/ATLAS.deed" (expect "pass") (head "estate-atlas-deed")))
 
   (negative-fixtures
     (fixture "invalid/missing-identity.a2ml" (expect "error") (reason "missing identity"))
     (fixture "invalid/missing-version.a2ml" (expect "strict-error") (reason "missing version warning"))
     (fixture "invalid/missing-spdx.a2ml" (expect "strict-error") (reason "missing license header warning"))
     (fixture "invalid/empty-attestation.a2ml" (expect "strict-error") (reason "empty attestation warning"))
-    (fixture "invalid/malformed-heading.a2ml" (expect "strict-error") (reason "malformed heading warning"))))
+    (fixture "invalid/malformed-heading.a2ml" (expect "strict-error") (reason "malformed heading warning"))
+    (fixture "invalid/deed-missing-head.deed" (expect "error") (reason "no ruled head and no identity keyword"))
+    (fixture "invalid/deed-missing-version.deed" (expect "strict-error") (reason "missing :schema-version warning"))))

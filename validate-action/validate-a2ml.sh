@@ -4,7 +4,7 @@
 #
 # validate-a2ml.sh — A2ML manifest validation script
 #
-# Scans for .a2ml files and validates:
+# Scans for .a2ml and .deed files and validates:
 #   1. Required fields: agent-id or pedigree name, version
 #   2. SPDX-License-Identifier header presence
 #   3. Attestation block structure (if present)
@@ -89,7 +89,7 @@ report_issue() {
 }
 
 # ---------------------------------------------------------------------------
-# Validator: check a single .a2ml file
+# Validator: check a single .a2ml or .deed file
 # ---------------------------------------------------------------------------
 validate_a2ml() {
     local file="$1"
@@ -150,6 +150,21 @@ validate_a2ml() {
         if [[ "$line" =~ ^[[:space:]]*(agent[-_]id|name|project|id)[[:space:]]*: ]]; then
             has_identity=true
         fi
+        # DEED s-expression head form: `(estate-deed`, `(repo-deed`,
+        # `(estate-atlas-deed`, `(praxis-deed`. Per DEED-GRAMMAR-SPEC
+        # <<identity>>, a file whose first form is one of the four declared
+        # heads is a deed of that kind, and the head satisfies the structural
+        # half of identity. This is what lets ATLAS.deed — which carries
+        # :registry-version and legitimately no :canonical-name — validate.
+        if [[ "$line" =~ ^[[:space:]]*\((estate-deed|repo-deed|estate-atlas-deed|praxis-deed)([[:space:]]|$) ]]; then
+            has_identity=true
+        fi
+        # DEED keyword identity form: `:canonical-name "..."` and the two other
+        # identity keywords the spec names. Note the leading colon: none of the
+        # three forms above match it, because they test the bare words.
+        if [[ "$line" =~ ^[[:space:]]*:(canonical-name|estate-authority|agent-id)[[:space:]] ]]; then
+            has_identity=true
+        fi
         # Check for version field — TOML form
         if [[ "$line" =~ ^[[:space:]]*(version|schema_version)[[:space:]]*= ]]; then
             has_version=true
@@ -160,6 +175,14 @@ validate_a2ml() {
         fi
         # Version field — colon / brace-block form
         if [[ "$line" =~ ^[[:space:]]*(version|schema_version)[[:space:]]*: ]]; then
+            has_version=true
+        fi
+        # DEED keyword version form: `:schema-version "1.0.0"` — leading colon,
+        # hyphenated, REQUIRED on all four deed heads (DEED-GRAMMAR-SPEC
+        # <<version-field>>). All three patterns above spell it `schema_version`
+        # with no leading colon, so a conforming deed matched none of them.
+        # `:registry-version` is a distinct field, optional on the atlas.
+        if [[ "$line" =~ ^[[:space:]]*:(schema-version|registry-version)[[:space:]] ]]; then
             has_version=true
         fi
     done < "$file"
@@ -298,15 +321,15 @@ validate_a2ml() {
 }
 
 # ---------------------------------------------------------------------------
-# Main: discover and validate .a2ml files
+# Main: discover and validate .a2ml and .deed files
 # ---------------------------------------------------------------------------
 
 echo "::group::A2ML Manifest Validation"
-echo "Scanning ${SCAN_PATH} for .a2ml files..."
+echo "Scanning ${SCAN_PATH} for .a2ml and .deed files..."
 echo ""
 
-# Find all .a2ml files, excluding .git directory
-mapfile -t a2ml_candidates < <(find "$SCAN_PATH" -name '*.a2ml' -not -path '*/.git/*' -type f | sort)
+# Find all .a2ml and .deed files, excluding .git directory
+mapfile -t a2ml_candidates < <(find "$SCAN_PATH" \( -name '*.a2ml' -o -name '*.deed' \) -not -path '*/.git/*' -type f | sort)
 
 # Apply paths-ignore filter
 a2ml_files=()
@@ -324,7 +347,7 @@ if [[ $SKIPPED -gt 0 ]]; then
 fi
 
 if [[ ${#a2ml_files[@]} -eq 0 ]]; then
-    echo "::notice::No .a2ml files found in ${SCAN_PATH}"
+    echo "::notice::No .a2ml or .deed files found in ${SCAN_PATH}"
     echo "files_scanned=0" >> "$GITHUB_OUTPUT_FILE" 2>/dev/null || true
     echo "errors=0" >> "$GITHUB_OUTPUT_FILE" 2>/dev/null || true
     echo "warnings=0" >> "$GITHUB_OUTPUT_FILE" 2>/dev/null || true
@@ -332,7 +355,7 @@ if [[ ${#a2ml_files[@]} -eq 0 ]]; then
     exit 0
 fi
 
-echo "Found ${#a2ml_files[@]} .a2ml file(s)"
+echo "Found ${#a2ml_files[@]} .a2ml/.deed file(s)"
 echo ""
 
 for file in "${a2ml_files[@]}"; do
