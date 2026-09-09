@@ -5,6 +5,33 @@
 // SPDX-License-Identifier: CC-BY-SA-4.0 for documentation
 // SPDX-FileCopyrightText: 2025-2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
+[IMPORTANT]
+====
+*The DEED format name and `.deed` extension are final, not A2ML.* Renamed
+2026-09-03, ruled final. Its proposed grammar — syntax, semantics and
+typechecking — is `deed/spec/DEED-GRAMMAR-SPEC.adoc` in
+`hyperpolymath/standards`
+(https://github.com/hyperpolymath/standards/pull/752[standards#752]). After it
+merges, it will be the single normative source; this hub holds a pointer to it,
+never a copy.
+
+DEED `.deed` documents use an *s-expression* format. There is no `key = value`
+production and no `[section]` production; the only bracket is `(`. This syntax
+statement does not apply to retained A2ML v1 material. The stale "TOML-like
+key-value" wording is superseded for DEED — see
+https://github.com/hyperpolymath/standards/pull/753[standards#753].
+
+*This repository is to be renamed `deed-ecosystem`* and restructured to match
+`k9-ecosystem` (tracked as estate task #77). That rename is the owner's trigger
+and has deliberately not been performed here.
+
+*Naming discrepancy, unresolved:* this repository expands A2ML as "Attestation
+Markup Language" (4 occurrences); `hyperpolymath/standards` expands it as
+"Annotated Markup Language" (6 occurrences). Both are in current text. The
+rename to DEED makes the question moot going forward, but the historical record
+should settle on one expansion.
+====
+
 `hyperpolymath/a2ml-ecosystem` coordinates implementations, tooling, CI
 integrations, examples, and conformance fixtures for A2ML.
 
@@ -24,9 +51,15 @@ governance authority are pinned in the https://github.com/hyperpolymath/standard
 
 == Not Owned Here
 
-The A2ML specification is owned by `hyperpolymath/standards`. This hub points
-to `a2ml/SPEC.adoc` there; until the first standards tag is cut, the pin
-is intentionally `TODO-tag`.
+The format specification is owned by `hyperpolymath/standards` and is pending
+until https://github.com/hyperpolymath/standards/pull/752[standards#752] merges.
+This hub will then point to `deed/spec/DEED-GRAMMAR-SPEC.adoc` there -- see
+link:spec/README.adoc[spec/README.adoc] for the pin and its history.
+
+The previous pointer, `a2ml/SPEC.adoc`, was correct when written but went stale
+on 2026-08-28 when commit `24a12d6f` carved `a2ml/` out of `standards` into the
+standalone `hyperpolymath/a2ml` repository. No release tag has been cut, so the
+pin stays unset rather than pointing at a path that no longer exists.
 
 == Machine-Readable Layout
 
