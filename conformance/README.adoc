@@ -21,6 +21,24 @@ Negative fixtures are classified as: missing identity (error); and missing
 version, missing license header, empty attestation, and malformed heading
 (warnings that become errors under strict mode).
 
+== Deed fixtures
+
+The corpus covers both scanned extensions. The `.deed` fixtures in `valid/`
+are one per ruled deed head (DEED-GRAMMAR-SPEC `<<document-forms>>`):
+`estate-deed`, `repo-deed`, `praxis-deed` and `estate-atlas-deed`.
+
+`ATLAS.deed` carries `:registry-version` and deliberately no `:canonical-name`:
+per the spec, the head symbol itself satisfies the structural half of identity,
+so the atlas form must pass on its head alone.
+
+The two negative deeds are `deed-missing-head.deed` (no ruled head and no
+identity keyword — error) and `deed-missing-version.deed` (no
+`:schema-version` — warning, error under strict).
+
+Run link:run-deed-tests.sh[run-deed-tests.sh] to exercise them behaviourally.
+It asserts on the discovery COUNT, not just the exit code, because the defect
+it guards produced exit 0 by scanning nothing at all.
+
 == Authoring gotcha
 
 A negative fixture's COMMENT must not contain the literal license token, or a

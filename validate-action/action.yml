@@ -2,14 +2,14 @@
 # Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 #
 # action.yml — Validate A2ML Manifests GitHub Action
-# Scans repository for .a2ml files and validates structure, required fields,
-# SPDX headers, and attestation blocks.
+# Scans repository for .a2ml and .deed files and validates structure, required
+# fields, SPDX headers, and attestation blocks.
 
 name: 'Validate A2ML Manifests'
 description: >-
-  Scan and validate .a2ml manifest files in your repository.
-  Checks for required fields (agent-id/pedigree name, version),
-  SPDX headers, and attestation block structure.
+  Scan and validate .a2ml and .deed manifest files in your repository.
+  Checks for required fields (agent-id / pedigree name / :canonical-name,
+  version / :schema-version), SPDX headers, and attestation block structure.
 author: 'Jonathan D.A. Jewell'
 
 branding:
@@ -19,7 +19,7 @@ branding:
 inputs:
   path:
     description: >-
-      Directory path to scan for .a2ml files.
+      Directory path to scan for .a2ml and .deed files.
       Defaults to the repository root.
     required: false
     default: '.'
