@@ -22,6 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No job here pushes or uses the token; this workflow runs on
+          # pull_request and executes repository-controlled code, so the
+          # default credential persistence in .git/config is exposure with
+          # no upside (CWE-522).
+          persist-credentials: false
       - name: Check membership manifest and submodule declarations
         run: scripts/check-membership.sh
       - name: Resolve submodule pins
@@ -52,6 +58,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No job here pushes or uses the token; this workflow runs on
+          # pull_request and executes repository-controlled code, so the
+          # default credential persistence in .git/config is exposure with
+          # no upside (CWE-522).
+          persist-credentials: false
       - name: Check upstream spec and governance pins
         run: |
           anchor=".machine_readable/anchors/ANCHOR.a2ml"
@@ -69,6 +81,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No job here pushes or uses the token; this workflow runs on
+          # pull_request and executes repository-controlled code, so the
+          # default credential persistence in .git/config is exposure with
+          # no upside (CWE-522).
+          persist-credentials: false
       - uses: hyperpolymath/a2ml-ecosystem/validate-action@aa4b836bd969df2bc58128cb8e3d20bbc88d5e79
         with:
           path: "."
@@ -88,6 +106,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No job here pushes or uses the token; this workflow runs on
+          # pull_request and executes repository-controlled code, so the
+          # default credential persistence in .git/config is exposure with
+          # no upside (CWE-522).
+          persist-credentials: false
       - uses: hyperpolymath/a2ml-ecosystem/validate-action@aa4b836bd969df2bc58128cb8e3d20bbc88d5e79
         with:
           path: "conformance/valid"
@@ -97,6 +121,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No job here pushes or uses the token; this workflow runs on
+          # pull_request and executes repository-controlled code, so the
+          # default credential persistence in .git/config is exposure with
+          # no upside (CWE-522).
+          persist-credentials: false
       - id: negative
         continue-on-error: true
         uses: hyperpolymath/a2ml-ecosystem/validate-action@aa4b836bd969df2bc58128cb8e3d20bbc88d5e79
@@ -118,5 +148,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No job here pushes or uses the token; this workflow runs on
+          # pull_request and executes repository-controlled code, so the
+          # default credential persistence in .git/config is exposure with
+          # no upside (CWE-522).
+          persist-credentials: false
       - name: Deed fixtures — all four ruled heads
         run: bash conformance/run-deed-tests.sh
