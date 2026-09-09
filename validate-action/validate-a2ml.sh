@@ -123,6 +123,7 @@ validate_a2ml() {
     #   - project = "..." (for STATE.a2ml)
     local has_identity=false
     local has_version=false
+    local first_form_seen=false
     line_num=0
 
     while IFS= read -r line; do
@@ -156,8 +157,16 @@ validate_a2ml() {
         # heads is a deed of that kind, and the head satisfies the structural
         # half of identity. This is what lets ATLAS.deed — which carries
         # :registry-version and legitimately no :canonical-name — validate.
-        if [[ "$line" =~ ^[[:space:]]*\((estate-deed|repo-deed|estate-atlas-deed|praxis-deed)([[:space:]]|$) ]]; then
-            has_identity=true
+        # The head is the FIRST form (DEED-GRAMMAR-SPEC <<concrete-syntax>>:
+        # `Deed ::= Header Sep? Form Sep?` — one form, and it carries the head).
+        # Checking every line let a malformed file open with some other form and
+        # then append `(estate-deed ...)` lower down to buy identity. Only the
+        # first form is eligible.
+        if [[ "$first_form_seen" == "false" && "$line" =~ ^[[:space:]]*\( ]]; then
+            first_form_seen=true
+            if [[ "$line" =~ ^[[:space:]]*\((estate-deed|repo-deed|estate-atlas-deed|praxis-deed)([[:space:]]|$) ]]; then
+                has_identity=true
+            fi
         fi
         # DEED keyword identity form: `:canonical-name "..."` and the two other
         # identity keywords the spec names. Note the leading colon: none of the
@@ -182,7 +191,12 @@ validate_a2ml() {
         # <<version-field>>). All three patterns above spell it `schema_version`
         # with no leading colon, so a conforming deed matched none of them.
         # `:registry-version` is a distinct field, optional on the atlas.
-        if [[ "$line" =~ ^[[:space:]]*:(schema-version|registry-version)[[:space:]] ]]; then
+        # `:schema-version` ONLY. `:registry-version` is a distinct, optional
+        # atlas field (see the note above) and never satisfies the version
+        # requirement, which DEED-GRAMMAR-SPEC <<version-field>> makes REQUIRED
+        # on all four heads. Accepting it let a registry-only atlas head pass
+        # with no schema version at all.
+        if [[ "$line" =~ ^[[:space:]]*:schema-version[[:space:]] ]]; then
             has_version=true
         fi
     done < "$file"
@@ -192,7 +206,11 @@ validate_a2ml() {
     local basename
     basename="$(basename "$file")"
     local is_manifest=false
-    if [[ "$basename" == *"AI-MANIFEST"* ]]; then
+    # `.a2ml` ONLY. The exemption exists because AI manifests are markdown-ish
+    # prose with no in-file identity; it is not a property of the name. Matching
+    # the bare basename meant `example-AI-MANIFEST.deed` was exempted from BOTH
+    # the identity and version checks — a deed that skipped the whole gate.
+    if [[ "$basename" == *"AI-MANIFEST"*.a2ml ]]; then
         is_manifest=true
     fi
     # Canonical typed manifests under <machine tree>/descriptiles/ — identity comes
