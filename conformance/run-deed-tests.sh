@@ -19,7 +19,9 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VALIDATOR="${HERE}/../validate-action/validate-a2ml.sh"
 FAILURES=0
 
+# Report a passing assertion using the test script's standard output format.
 ok()   { echo "  PASS: $1"; }
+# Report a failing assertion and add it to the final failure count.
 fail() { echo "  FAIL: $1"; FAILURES=$((FAILURES + 1)); }
 
 # The conformance directories hold .a2ml fixtures too. Isolate the .deed ones
