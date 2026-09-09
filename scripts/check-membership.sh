@@ -14,47 +14,39 @@ fail() {
 check_member() {
   local group="$1"
   local name="$2"
-  local url="https://github.com/hyperpolymath/${name}.git"
-  local path="members/${group}/${name}"
-  local module="submodule.${path}"
-  local actual_url
-  local actual_branch
-  local mode
+  local path="$3"
 
-  if ! grep -Fq "(member \"${name}\" (group \"${group}\")" .machine_readable/6a2/ECOSYSTEM.a2ml; then
-    fail ".machine_readable/6a2/ECOSYSTEM.a2ml missing ${group}/${name}"
+  if ! grep -Fq "(member \"${name}\" (group \"${group}\") (path \"${path}\")" .machine_readable/6a2/ECOSYSTEM.a2ml; then
+    fail ".machine_readable/6a2/ECOSYSTEM.a2ml missing ${group}/${name} at ${path}"
   fi
 
-  actual_url="$(git config -f .gitmodules --get "${module}.url" || true)"
-  if [[ "${actual_url}" != "${url}" ]]; then
-    fail ".gitmodules ${path} url is '${actual_url}', expected '${url}'"
+  if [[ ! -d "${path}" ]]; then
+    fail "${group}/${name} vendored directory '${path}' is missing"
+    return
   fi
 
-  actual_branch="$(git config -f .gitmodules --get "${module}.branch" || true)"
-  if [[ "${actual_branch}" != "main" ]]; then
-    fail ".gitmodules ${path} branch is '${actual_branch}', expected 'main'"
-  fi
-
-  mode="$(git ls-files -s "${path}" | awk '{print $1}')"
-  if [[ "${mode}" != "160000" ]]; then
-    fail "${path} is not a pinned submodule gitlink"
+  if ! git ls-files "${path}/" | grep -q .; then
+    fail "${group}/${name} vendored directory '${path}' has no tracked files"
   fi
 }
 
-check_member implementations a2ml-rs
-check_member implementations a2ml_ex
-check_member implementations a2ml_gleam
-check_member implementations a2ml-deno
-check_member implementations a2ml-haskell
-check_member tooling tree-sitter-a2ml
-check_member tooling vscode-a2ml
-check_member tooling pandoc-a2ml
-check_member tooling a2mliser
-check_member ci a2ml-validate-action
-check_member ci a2ml-pre-commit
-check_member examples a2ml-showcase
+check_member implementations a2ml-rs rs
+check_member implementations a2ml_ex ex
+check_member implementations a2ml_gleam gleam
+check_member implementations a2ml-deno deno
+check_member implementations a2ml-haskell haskell
+check_member tooling vscode-a2ml members/tooling/vscode-a2ml
+check_member ci a2ml-validate-action validate-action
+check_member examples a2ml-showcase showcase
 
-if grep -R "contractiles-a2-lab" .gitmodules members >/dev/null 2>&1; then
+# Members were consolidated into this monorepo by aa4b836. A surviving gitlink
+# without a matching .gitmodules entry breaks actions/checkout cleanup and can
+# never be initialized, so fail with the exact stale paths if one reappears.
+while IFS= read -r gitlink; do
+  [[ -n "${gitlink}" ]] && fail "orphan submodule gitlink remains at ${gitlink}"
+done < <(git ls-files -s | awk '$1 == "160000" { print $4 }')
+
+if grep -R "contractiles-a2-lab" members >/dev/null 2>&1; then
   fail "contractiles-a2-lab must not be a member submodule"
 fi
 

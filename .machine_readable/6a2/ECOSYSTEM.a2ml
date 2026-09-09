@@ -3,7 +3,7 @@
   (metadata
     (name "a2ml-ecosystem")
     (version "0.1.0")
-    (updated "2026-06-27")
+    (updated "2026-09-09")
     (authority "coordination-hub")
     (semantic-authority "satellite"))
 
@@ -19,24 +19,20 @@
 
   (membership
     (implementations
-      (member "a2ml-rs" (group "implementations") (path "members/implementations/a2ml-rs") (branch "main") (repo "hyperpolymath/a2ml-rs"))
-      (member "a2ml_ex" (group "implementations") (path "members/implementations/a2ml_ex") (branch "main") (repo "hyperpolymath/a2ml_ex"))
-      (member "a2ml_gleam" (group "implementations") (path "members/implementations/a2ml_gleam") (branch "main") (repo "hyperpolymath/a2ml_gleam"))
-      (member "a2ml-deno" (group "implementations") (path "members/implementations/a2ml-deno") (branch "main") (repo "hyperpolymath/a2ml-deno"))
-      (member "a2ml-haskell" (group "implementations") (path "members/implementations/a2ml-haskell") (branch "main") (repo "hyperpolymath/a2ml-haskell")))
+      (member "a2ml-rs" (group "implementations") (path "rs") (branch "main") (repo "hyperpolymath/a2ml-rs"))
+      (member "a2ml_ex" (group "implementations") (path "ex") (branch "main") (repo "hyperpolymath/a2ml_ex"))
+      (member "a2ml_gleam" (group "implementations") (path "gleam") (branch "main") (repo "hyperpolymath/a2ml_gleam"))
+      (member "a2ml-deno" (group "implementations") (path "deno") (branch "main") (repo "hyperpolymath/a2ml-deno"))
+      (member "a2ml-haskell" (group "implementations") (path "haskell") (branch "main") (repo "hyperpolymath/a2ml-haskell")))
 
     (tooling
-      (member "tree-sitter-a2ml" (group "tooling") (path "members/tooling/tree-sitter-a2ml") (branch "main") (repo "hyperpolymath/tree-sitter-a2ml"))
-      (member "vscode-a2ml" (group "tooling") (path "members/tooling/vscode-a2ml") (branch "main") (repo "hyperpolymath/vscode-a2ml"))
-      (member "pandoc-a2ml" (group "tooling") (path "members/tooling/pandoc-a2ml") (branch "main") (repo "hyperpolymath/pandoc-a2ml"))
-      (member "a2mliser" (group "tooling") (path "members/tooling/a2mliser") (branch "main") (repo "hyperpolymath/a2mliser")))
+      (member "vscode-a2ml" (group "tooling") (path "members/tooling/vscode-a2ml") (branch "main") (repo "hyperpolymath/vscode-a2ml")))
 
     (ci
-      (member "a2ml-validate-action" (group "ci") (path "members/ci/a2ml-validate-action") (branch "main") (repo "hyperpolymath/a2ml-validate-action"))
-      (member "a2ml-pre-commit" (group "ci") (path "members/ci/a2ml-pre-commit") (branch "main") (repo "hyperpolymath/a2ml-pre-commit")))
+      (member "a2ml-validate-action" (group "ci") (path "validate-action") (branch "main") (repo "hyperpolymath/a2ml-validate-action")))
 
     (examples
-      (member "a2ml-showcase" (group "examples") (path "members/examples/a2ml-showcase") (branch "main") (repo "hyperpolymath/a2ml-showcase"))))
+      (member "a2ml-showcase" (group "examples") (path "showcase") (branch "main") (repo "hyperpolymath/a2ml-showcase"))))
 
   (related
     (related "contractiles-a2-lab" (relationship "private-lab-cross-reference") (repo "hyperpolymath/contractiles-a2-lab") (member false))))
