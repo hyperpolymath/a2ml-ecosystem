@@ -1,15 +1,62 @@
-= A2ML Specification Pointer
+= DEED Specification Pointer (formerly A2ML)
 
 // SPDX-License-Identifier: CC-BY-SA-4.0
 
-The A2ML specification is not owned in this coordination hub.
+The format specification is not owned in this coordination hub.
 
-Canonical upstream:
+[IMPORTANT]
+====
+*The DEED format name and `.deed` extension are final* — renamed from A2ML,
+ruled final 2026-09-03. The proposed DEED grammar uses an *s-expression*
+format: there is no `key = value` production and no `[section]` production; the
+only bracket is `(`. This syntax statement does not apply to historical A2ML v1
+inputs. The stale "TOML-like key-value" wording is superseded for DEED.
+====
+
+== Canonical upstream
 
 * Repository: `hyperpolymath/standards`
-* Path: `a2ml/SPEC.adoc` (typed core + markup surface, v1.1.0)
-* Companion: `a2ml/RECORD-DIALECT-SPEC.adoc` (record surface for descriptiles, v1.0.0)
-* Pin: `891b1ed6164478616cb3375f328c6487ccb13f80` (commit pin; no A2ML release tag cut yet)
+* Path: `deed/spec/DEED-GRAMMAR-SPEC.adoc` — the proposed grammar (syntax,
+  semantics, typechecking), v0.1.0. Companion ABNF at `deed/spec/abnf/deed.abnf`.
+* Status: landing in https://github.com/hyperpolymath/standards/pull/752[standards#752].
+  Until that merges this path does not yet exist on `main`; the pin below is
+  deliberately left unset rather than pointed at a stale commit.
+
+== Why the previous pin was stale
+
+This file previously pinned:
+
+  Repository: hyperpolymath/standards
+  Path:       a2ml/SPEC.adoc  (typed core + markup surface, v1.1.0)
+  Companion:  a2ml/RECORD-DIALECT-SPEC.adoc
+  Pin:        891b1ed6164478616cb3375f328c6487ccb13f80
+
+That pointer was *correct when written* — `a2ml/` did exist in `standards` at
+commit `891b1ed6`. It was removed by `24a12d6f` (2026-08-28), *"carve-out: evict
+a2ml, lol and the repo-guardian pair"*, which moved the v1 material into the
+standalone `hyperpolymath/a2ml` repository. The satellite pointer was never
+updated, so from that date this hub pointed at a path that no longer existed.
+
+The measured 0.2% descriptile conformance came from stale "TOML-like" wording
+and files generated from it. A dangling upstream pointer is a separate
+verification risk: while it dangles, nothing downstream can check itself
+against the specification, and each consumer is free to invent its own idea of
+the format.
+
+== Where the v1 material now lives
+
+* `hyperpolymath/a2ml` — the typed core (Idris2), `SPEC.adoc`, and the dialect
+  specifications.
+* `RECORD-DIALECT-SPEC.adoc` retains its current status until
+  https://github.com/hyperpolymath/a2ml/pull/2[a2ml#2] merges; it is not yet
+  marked *SUPERSEDED*.
+* `MANIFEST-DIALECT-SPEC.adoc` in that repository describes the `---`-delimited
+  frontmatter surface of `0-AI-MANIFEST.a2ml` (894 files, 100% conformant). Its
+  disposition under DEED is an *open question* for the owner — it is
+  deliberately not stamped.
+* The existing `.a2ml` validator (`validate-action/validate-a2ml.sh`) and the
+  positive fixtures in `conformance/valid/` are historical v1 inputs, explicitly
+  non-DEED. No migration is required to make that distinction accurate.
 
 The corresponding governance authority is pinned in
 link:../.machine_readable/anchors/ANCHOR.a2ml[ANCHOR.a2ml].
